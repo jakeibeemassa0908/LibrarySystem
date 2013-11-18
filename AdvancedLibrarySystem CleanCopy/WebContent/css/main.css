@@ -1,0 +1,50 @@
+#on {
+      margin-left: 25%;
+    }
+    #reg {
+      font-family: verdena;
+      font-size: 16px;
+    }
+    
+	body{
+		background-color;
+	}
+	#logout{
+    	float:right;
+    	margin-right:20px;
+    }
+    
+        	.navbar
+{
+    background-color:black;
+}
+.book{
+	height:250px;
+	margin-right:20px;
+	padding:0px;
+}
+.book-img{
+	height:201px;
+	width:100%;
+}
+.book-infos{
+	height:48px;
+	overflow:hidden;
+}
+.book-row{
+	margin-left:50px;
+	margin-bottom:30px;
+}
+.see-more{
+	float:right;
+}
+.comment{
+	width:100%;
+	margin-bottom:10px;
+	background-color:lightgrey;
+}
+.comment-title{
+	background-color:lightgreen;
+	border:0px;
+	padding:0px;
+}
