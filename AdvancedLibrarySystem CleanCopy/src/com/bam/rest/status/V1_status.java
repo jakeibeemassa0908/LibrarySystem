@@ -1,7 +1,7 @@
 package com.bam.rest.status;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
 
 @Path("/v1/status")
 public class V1_status {
@@ -19,4 +19,5 @@ public class V1_status {
 	public String returnVersion(){
 		return "<p>Version: </p>"+ api_version;
 	}
+	
 }
