@@ -1,6 +1,7 @@
 package com.bam.servlets;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -87,6 +88,7 @@ public class ProfileServlet extends HttpServlet {
 					
 					
 					session.setAttribute("active_tab", "profile");
+					session.setAttribute("now", new Date());
 					dispatcher.forward(request, response);
 					return;
 				

@@ -152,8 +152,11 @@
 		  var pubDate=item.publishedDate;
 		  var rating=item.averageRating;
 		  var imageLink=item.imageLinks.thumbnail;
+		  
+		  //Get a bigget Image from the Google Book API by changing Zoom from 0 or 1 to 2
 		  imageLink=imageLink.replace("zoom=0", "zoom=2");
 		  imageLink=imageLink.replace("zoom=1", "zoom=2");
+		  
 		  var publisher=item.publisher;
 		  var category=item.categories;
 		  urlForm.value=imageLink;

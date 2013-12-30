@@ -2,6 +2,8 @@
  * Advanced Library System.
  * By.  Jake Ibee Massa
  * All Right Reserved.
+ * 
+ * Servlet that renders the home page of the user and the admin.
  * **/
 package com.bam.servlets;
 
@@ -40,6 +42,8 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			HttpSession session = request.getSession();
 			RequestDispatcher dispatcher=null;
+			
+			//if the the user is connected do the following
 			if(session.getAttribute("user")!=null){
 				dispatcher = request.getRequestDispatcher("home.jsp");
 				List <Bookings> bookings;
@@ -57,6 +61,7 @@ public class HomeServlet extends HttpServlet {
 				session.setAttribute("bookingsHome", bookings);
 				request.setAttribute("now", new Date());
 				
+			//if the admin is connected	
 			}else if(session.getAttribute("admin")!=null){
 				dispatcher = request.getRequestDispatcher("home_admin.jsp");
 			}else{

@@ -120,7 +120,16 @@
 							<c:if test="${booking.issued== false}"><td><a class="btn btn-primary btn-sm" href="<c:url value='/booking?issue=${booking.bookingId}'/>">Issue Book</a></td></c:if>
 							<c:if test="${booking.issued== true}"><td><span class="label label-success">${booking.issuedDate}</span></td></c:if>
 							<td>
-								<span class="label label-warning">${booking.bookingReturnDate }</span>
+								<c:choose>
+									<c:when test="${sessionScope.now.time gt booking.bookingReturnDate.time && booking.returned==false}">
+										<span class="label label-danger"> 
+									</c:when>
+									<c:otherwise>
+										<span class="label label-warning"> 
+									</c:otherwise>
+								</c:choose>
+								
+								${booking.bookingReturnDate }</span>
 								<c:if test='${booking.returned == true}'>
 									<span class="glyphicon glyphicon-ok"></span>
 								</c:if>

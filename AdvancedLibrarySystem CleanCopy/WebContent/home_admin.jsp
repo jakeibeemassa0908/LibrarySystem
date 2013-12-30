@@ -32,7 +32,7 @@
  	<div class="container">
  		<div class="row">
  			<div class="col-lg-7 ">
- 				<center><h4>Books due today</h4></center>
+ 				<center><h4>State of Library</h4></center>
  			</div>
  			<div class="col-lg-1"></div>
  			<div class="col-lg-4 ">

@@ -81,7 +81,17 @@
 							</c:if>
 							
 							<td>
-								<span class="label label-warning">${booking.bookingReturnDate }</span>
+								<c:choose>
+									<c:when test="${sessionScope.now.time gt booking.bookingReturnDate.time && booking.returned==false}">
+										<span class="label label-danger"> 
+									</c:when>
+									<c:otherwise>
+										<span class="label label-warning"> 
+									</c:otherwise>
+								</c:choose>
+								
+								
+								${booking.bookingReturnDate }</span>
 								<c:if test='${booking.returned == true}'>
 									<span class="glyphicon glyphicon-ok"></span>
 								</c:if>

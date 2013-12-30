@@ -41,9 +41,9 @@
  			</c:if>
  			<c:forEach items="${sessionScope.bookingsHome}" var="booking">
  				<div class="row">
- 					<div class="col-lg-5 well">
+ 					<a href="book_detail/${booking.book.bookId}"><div class="col-lg-5 well">
  						<img alt="" src="${booking.book.book_cover_link}" width="250" height="150">
- 					</div>
+ 					</div></a>
  					<div class="col-lg-7">
  						<a href="book_detail/${booking.book.bookId}"><h4>${booking.book.title}</h4></a>
  						<h5>${booking.book.author}</h5>
@@ -76,7 +76,7 @@
 								<h5>You have to return the book today</h5>
 							</c:when>
 							<c:otherwise>
-								<h5>You have exceeded the authorized time.</h5>
+								<h5 style="color:red;">You have exceeded the authorized time.</h5>
 							</c:otherwise>
 						
 						</c:choose>

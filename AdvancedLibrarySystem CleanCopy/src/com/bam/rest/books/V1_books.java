@@ -20,19 +20,28 @@ public class V1_books {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String returnBooks() throws Exception{
+	public Response returnBooks() throws Exception{
 		
 		AddBookService abs = new AddBookService();
 		ToJSON toJson = new ToJSON();
+		Response rb = null;
+		String returnString=null;
 		
 		JSONArray array = new JSONArray(); //JSON array to return
 		
+		try{
 		//call the getbooks function from the Hibernate function
 		books = abs.getbooks(null, null, null, null, null, null);
 		array= toJson.booksToJSON(books);
 		
 		
-		return array.toString();
+		returnString=array.toString();
+		rb=Response.ok(returnString).build();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return rb;
 	}
 	
 	

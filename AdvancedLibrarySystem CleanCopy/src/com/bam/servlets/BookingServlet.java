@@ -70,7 +70,6 @@ public class BookingServlet extends HttpServlet {
 				int bookToReturn= Integer.parseInt(request.getParameter("return"));
 				
 				abs.returnBookPiece(bookToReturn);
-				
 				response.sendRedirect("booking");
 				return;
 			}
@@ -82,6 +81,7 @@ public class BookingServlet extends HttpServlet {
 				session.setAttribute("bookings", bookings);
 			}
 		}
+		session.setAttribute("now", new Date());
 		session.setAttribute("active_tab", "booking");
 		dispatcher.forward(request, response);
 	}

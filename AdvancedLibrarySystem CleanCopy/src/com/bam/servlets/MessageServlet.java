@@ -111,6 +111,7 @@ public class MessageServlet extends HttpServlet {
 				}
 				
 			}else{
+				request.setAttribute("msg_subject", request.getParameter("sub"));
 				session.setAttribute("to", null);
 			}
 		}
