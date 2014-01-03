@@ -49,7 +49,7 @@ public class MessageService {
 		}
 		
 	}
-	public List<Messages> getMessages(Integer from, Integer to,Integer id){
+	public List<Messages> getMessages(Integer from, Integer to,Integer id,Integer asker){
 		List<Messages> messages=null;
 		Session session1=null;
 		try {
@@ -67,6 +67,13 @@ public class MessageService {
 			criteria.addOrder(Order.desc("messageDate"));
 			if(id!=null){
 				criteria.add(Restrictions.like("messageId",id));
+			}
+			if(asker!=null){
+				if(asker==0){
+					criteria.add(Restrictions.like("deletedByAdmin",false));
+				}else{
+					criteria.add(Restrictions.like("deletedByStudent",false));
+				}
 			}
 			messages=criteria.list();
 			
@@ -122,5 +129,29 @@ public class MessageService {
 			session.close();
 		}
 		return messages_number;
+	}
+	
+	public void setMessageDeleted(int messageId,int deleteBy){
+		Session session1=null;
+		try {
+			session1 = connection.getSession();
+			session1.beginTransaction();
+			Messages message= (Messages) session1.load(Messages.class, messageId);
+			if(deleteBy==0){
+				message.setDeletedByAdmin(true);
+			}else{
+				message.setDeletedByStudent(true);
+			}
+			session1.update(message);
+			session1.getTransaction().commit();
+		} catch (HibernateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+		
+		session1.close();
+		
+		}
+		
 	}
 }

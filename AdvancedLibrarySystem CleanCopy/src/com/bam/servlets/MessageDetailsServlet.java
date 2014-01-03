@@ -50,7 +50,7 @@ public class MessageDetailsServlet extends HttpServlet {
 				std=(Students) session.getAttribute("user");
 				std.getStudentId();
 				whoOpen=std.getStudentId();
-				messages=ms.getMessages(from, to, ID);
+				messages=ms.getMessages(from, to, ID,null);
 				if (messages.get(0).getMessageFrom()!=std.getStudentId() && messages.get(0).getMessageTo()!=std.getStudentId()){
 					return;
 				}else if(messages.isEmpty() || messages==null){
@@ -59,11 +59,11 @@ public class MessageDetailsServlet extends HttpServlet {
 					return;
 				}
 			}
-			messages=ms.getMessages(from, to, ID);
+			messages=ms.getMessages(from, to, ID,null);
 			if (messages.get(0).getMessageTo()==whoOpen){
 				ms.updateMessage(ID);
 			}
-			messages=ms.getMessages(from, to, ID);
+			messages=ms.getMessages(from, to, ID,null);
 			
 			if (messages.isEmpty()){
 				String path=request.getContextPath();

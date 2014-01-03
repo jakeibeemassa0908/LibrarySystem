@@ -34,8 +34,10 @@ import com.bam.services.StudentService;
 @WebServlet("/message")
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-  
+	private static final int ADMIN_CODE=0;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		StringBuffer requestURL = request.getRequestURL();
 		String requestName=requestURL.toString();
 		int start=requestName.lastIndexOf("message");
@@ -46,8 +48,9 @@ public class MessageServlet extends HttpServlet {
 		session.setAttribute("active_tab", "message");
 		
 		MessageService msgServ = new MessageService();
-		List<Messages> messagesin, messagesout;
+		List<Messages> messagesin, messagesout,message;
 		Students student= new Students();
+		StudentService sc= new StudentService();
 		if (session.getAttribute("user")!=null){
 		//get current user session ID
 		student=(Students) session.getAttribute("user");
@@ -55,51 +58,57 @@ public class MessageServlet extends HttpServlet {
 		Integer from =null;
 		Integer to=null;
 		
-		//select the message part and the messages that are by the current student
+		//Show outbox message
 		if (requestName.substring(start).equals("message_outbox")){
 			if(session.getAttribute("admin")!=null){
-				from=0;
+				from=ADMIN_CODE;
 				to=null;
 			}else{
 				from=student.getStudentId();
 			}
+			int asker;
+			if(from==ADMIN_CODE)asker=ADMIN_CODE;
+			else asker=2;
 			//get all messages form the database
-			messagesout=msgServ.getMessages(from, to, null);
+			messagesout=msgServ.getMessages(from, to, null,asker);
 			
 			if (messagesout.isEmpty()){
 				
 			}
 			else{
-			session.setAttribute("messages",messagesout);
+			session.setAttribute("messages_out",messagesout);
 			}
 			dispatcher.forward(request, response);
 			return;
 		}
 		else if (requestName.substring(start).equals("message")){
 			if(session.getAttribute("admin")!=null){
-				to=0;
+				to=ADMIN_CODE;
 				from=null;
 			}else{
 			to=student.getStudentId();
-			from=0;
+			from=ADMIN_CODE;
 			}
+			int asker;
+			if (to==ADMIN_CODE)asker=0;
+			else asker=2;
 			//get all messages form the database
-			messagesin=msgServ.getMessages(from, to, null);
+			messagesin=msgServ.getMessages(from, to, null,asker);
 			if (messagesin.isEmpty()){
 				
 			}
 			else{
-			session.setAttribute("messagesin",messagesin);
+			session.setAttribute("messages_in",messagesin);
 			}
 			dispatcher.forward(request, response);
 			return;
 		}
+		
 		else if (requestName.substring(start).equals("message_compose")){
 			if(session.getAttribute("admin")!=null && request.getQueryString()!=null){
 				List<Students> students=null;
 				try {
 					int ID= Integer.parseInt(request.getParameter("to"));
-					StudentService sc= new StudentService();
 					students=sc.getStudent(ID);
 					session.setAttribute("to", students.get(0));
 					request.setAttribute("msg_subject", request.getParameter("sub"));
@@ -109,11 +118,32 @@ public class MessageServlet extends HttpServlet {
 					response.sendRedirect(path+"/error");
 					return;
 				}
-				
 			}else{
 				request.setAttribute("msg_subject", request.getParameter("sub"));
 				session.setAttribute("to", null);
 			}
+		}
+		//Delete message
+		else if (requestName.substring(start).equals("message_delete")){
+			String path=request.getContextPath();
+			int messageId=Integer.parseInt(request.getParameter("id"));
+			if(session.getAttribute("admin")!=null && request.getQueryString()!=null){
+				msgServ.setMessageDeleted(messageId, 0);
+			}
+			else if(session.getAttribute("user")!=null){
+				student=(Students)session.getAttribute("user");
+				int studentId=student.getStudentId();
+				message=msgServ.getMessages(null, null, messageId,null);
+				if(message.get(0).getMessageFrom()==studentId || message.get(0).getMessageTo()==studentId){
+					msgServ.setMessageDeleted(messageId, 2);
+				}else{
+					response.sendRedirect(path+"/error");
+					return;
+				}
+			}
+			response.sendRedirect(path+ "/message");
+			return;
+			
 		}
 		
 		dispatcher.forward(request, response);
@@ -144,14 +174,14 @@ public class MessageServlet extends HttpServlet {
 				if(session.getAttribute("user")!=null){
 					std= (Students) session.getAttribute("user");
 					from= std.getStudentId();
-					to =0;
+					to =ADMIN_CODE;
 					fromString=std.getFirstName() +" "+ std.getlName()+" ("+ std.getEmail()+")";
 					toString="Admin";
 				}
 				else if (session.getAttribute("admin")!=null){
 					Library lib = new Library();
 					lib = (Library) session.getAttribute("admin");
-					from =0;
+					from =ADMIN_CODE;
 					fromString="Admin";
 					std=(Students) session.getAttribute("to");
 					to=std.getStudentId();

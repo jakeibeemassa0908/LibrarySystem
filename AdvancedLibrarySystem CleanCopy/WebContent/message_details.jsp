@@ -34,7 +34,7 @@
  			<div class="col-lg-4">
  				<a href="message" class="btn btn-default btn" type="button">All Messages</a>
  				<a href="message_compose?to=${sessionScope.messagesdet[0].messageFrom}&sub=Re:${sessionScope.messagesdet[0].messageSubject}" class="btn btn-success btn" type="button">Reply</a>
- 				<a href="" class="btn btn-danger btn" type="button">Delete</a>
+ 				<a href="message_delete?id=${sessionScope.messagesdet[0].messageId}" class="btn btn-danger btn" type="button">Delete</a>
  				
  			</div>
  		</div>

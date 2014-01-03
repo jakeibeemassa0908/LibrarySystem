@@ -43,10 +43,10 @@
  		<div class="row">
  			<div class="col-lg-1"></div>
  			<div class="col-lg-10">
- 			<c:if test="${sessionScope.messagesin==null}">
+ 			<c:if test="${sessionScope.messages_in==null}">
  				<center><h4>You have no messages in your Inbox</h4></center>
  			</c:if>
- 			<c:if test="${sessionScope.messagesin!=null}">
+ 			<c:if test="${sessionScope.messages_in!=null}">
  				<table class="table table-bordered table-hover">
 					<tr class="warning">
 						<th>Subject</th>
@@ -54,7 +54,7 @@
 						<th>Date</th>
 						<th>Content</th>
 					</tr>
-					<c:forEach items= "${sessionScope.messagesin}" var="message"> 
+					<c:forEach items= "${sessionScope.messages_in}" var="message"> 
 						<tr class="<c:if test='${message.openFlag==false}'>success</c:if>">
 							<td>${message.messageSubject}</td>
 							<c:if test="${sessionScope.admin!=null }">

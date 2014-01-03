@@ -38,7 +38,7 @@
     <url-pattern>/message_inbox</url-pattern>
     <url-pattern>/message_outbox</url-pattern>
     <url-pattern>/message_compose</url-pattern>
-    <url-pattern>/message_deleted</url-pattern>
+    <url-pattern>/message_delete</url-pattern>
   </servlet-mapping>
   <servlet>
   	<servlet-name>Jersey Rest Service</servlet-name>

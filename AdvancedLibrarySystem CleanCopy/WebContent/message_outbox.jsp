@@ -45,10 +45,10 @@
  		<div class="row">
  			<div class="col-lg-1"></div>
  			<div class="col-lg-10">
- 			<c:if test="${sessionScope.messages==null}">
+ 			<c:if test="${sessionScope.messages_out==null}">
  				<center><h4>You have no messages in your Outbox</h4></center>
  			</c:if>
- 			<c:if test="${sessionScope.messages!=null}">
+ 			<c:if test="${sessionScope.messages_out!=null}">
  				<table class="table table-bordered table-hover">
 					<tr class="success">
 						<th>Subject</th>
@@ -56,7 +56,7 @@
 						<th>Date</th>
 						<th>Content</th>
 					</tr>
-					<c:forEach items= "${sessionScope.messages}" var="message"> 
+					<c:forEach items= "${sessionScope.messages_out}" var="message"> 
 						<tr>
 							<td>${message.messageSubject}</td>
 							<c:if test="${sessionScope.user!=null }">
