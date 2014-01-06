@@ -1,5 +1,6 @@
 <%@ include file="includes/html_top.jsp" %>
 <%@ page import="java.util.Date" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,19 +30,27 @@
  	<%@include file="includes/top_message.jsp" %>
  	<div class="container">
  		<div class="col-lg-2  book_detail_image"></div>
- 		 <c:if test="${sessionScope.student.gender=='male'}">
- 			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/getProfileImage?id=${sessionScope.student.studentId}'/>">
- 			<a href="#" onclick="upload_image();"><center><span class="label label-danger">edit profile picture </span></center></a>
- 			<a href="#" onclick="send_image()" style="visibility:hidden" id="save_button"><center><span class="label label-primary">save image</span></center></a>
- 			
+ 				<c:choose>
+ 					<c:when test="${fn:length(sessionScope.student.profile_picture) gt 0}">
+ 						<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/getProfileImage?id=${sessionScope.student.studentId}'/>">
+ 					</c:when>
+ 					<c:otherwise>
+ 						<c:if test="${sessionScope.student.gender=='male'}">
+				 			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/images/profile_empty_boy.png'/>">
+				 		</c:if>
+				 		<c:if test="${sessionScope.student.gender=='female'}">
+				 			<div class="col-lg-3  book_detail_image"><img alt="" src="<c:url value='/images/profile_empty_girl.png'/>">
+				 		</c:if>
+ 					</c:otherwise>
+ 				</c:choose>
+ 			<c:if test="${sessionScope.user!=null}">
+ 				<a href="#" onclick="upload_image();"><center><span class="label label-danger">edit profile picture </span></center></a>
+ 				<a href="#" onclick="send_image()" style="visibility:hidden" id="save_button"><center><span class="label label-primary">save image</span></center></a>
+ 			</c:if>
  			<form method="post" action="<c:url value='/profileUpload'/>" enctype="multipart/form-data">
  				<input type="file" name="profile_picture" id="upload_button" style="visibility:hidden">
  				<input type="submit" id="send_image" style="visibility:hidden"/>
  			</form>
- 		</c:if>
- 		<c:if test="${sessionScope.student.gender=='female'}">
- 			<div class="col-lg-3  book_detail_image"><img alt="" src="<c:url value='/images/profile_empty_girl.png'/>">
- 		</c:if>
  			<hr>
  			<c:if test="${sessionScope.user!=null}">
  				<a type="button" class="btn btn-primary btn-block" href="<c:url value='/edit_profile?id=${sessionScope.student.studentId}'/>">Edit Profile</a>
@@ -180,6 +189,7 @@
   		$("#send_image").click();
   	}
   	
+  	//function to display image in the browser after the selection.
   	(function() {
 
   	    var URL = window.URL || window.webkitURL;

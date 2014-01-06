@@ -1,4 +1,5 @@
 <%@ include file="includes/html_top.jsp" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,12 +57,19 @@
 		 		<c:forEach items="${requestScope.students}" var="student" varStatus="status"> 
 			 		<a href="profile/${student.studentId}"><div class="col-lg-2 book well">
 			 			<div class="book-img">
-			 				<c:if test="${student.gender=='male'}">
-			 					<img src="images/profile_empty_boy.png" height="200" width="182"/>	
-			 				</c:if>
-			 				<c:if test="${student.gender=='female'}">
-			 					<img src="images/profile_empty_girl.png" height="200" width="182"/>	
-			 				</c:if>
+			 				<c:choose>
+		 				<c:when test="${fn:length(student.profile_picture) gt 0}">
+		 					<img src="<c:url value='/getProfileImage?id=${student.studentId}'/>" height="200" width="182"/>
+		 				</c:when>
+		 				<c:otherwise>
+		 					<c:if test="${student.gender=='male'}">
+		 						<img src="images/profile_empty_boy.png" height="200" width="182"/>
+		 					</c:if>
+		 					<c:if test="${student.gender=='female'}">
+		 						<img src="images/profile_empty_girl.png" height="200" width="182"/>
+		 					</c:if>	
+		 				</c:otherwise>
+		 			</c:choose>
 			 			</div>
 			 			<div class="book-infos">
 			 				<b><center>${student.firstName} ${student.lName}<br></center>

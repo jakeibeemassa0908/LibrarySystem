@@ -58,6 +58,8 @@ public class RegisterService {
 			st.setGender(map.get("gender")[0]);
 			st.setEmail(map.get("email")[0]);
 			st.setRegisterDate(new Date());
+			byte[] pic={};
+			st.setProfile_picture(pic);
 			
 			String passwordEncrypted= hc.toSHA1(map.get("password")[0].getBytes());
 			st.setPassword(passwordEncrypted);

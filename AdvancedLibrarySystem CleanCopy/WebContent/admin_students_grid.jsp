@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
     pageEncoding="US-ASCII"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <c:if test="${sessionScope.admin==null}">
@@ -37,12 +38,19 @@
 		 		<a href="profile/${student.studentId}">
 		 			<div class="col-lg-2 book well">
 		 			<div class="book-img">
-		 				<c:if test="${student.gender=='male'}">
-		 					<img src="images/profile_empty_boy.png" height="200" width="182"/>
-		 				</c:if>
-		 				<c:if test="${student.gender=='female'}">
-		 					<img src="images/profile_empty_girl.png" height="200" width="182"/>
-		 				</c:if>	
+		 			<c:choose>
+		 				<c:when test="${fn:length(student.profile_picture) gt 0}">
+		 					<img src="<c:url value='/getProfileImage?id=${student.studentId}'/>" height="200" width="182"/>
+		 				</c:when>
+		 				<c:otherwise>
+		 					<c:if test="${student.gender=='male'}">
+		 						<img src="images/profile_empty_boy.png" height="200" width="182"/>
+		 					</c:if>
+		 					<c:if test="${student.gender=='female'}">
+		 						<img src="images/profile_empty_girl.png" height="200" width="182"/>
+		 					</c:if>	
+		 				</c:otherwise>
+		 			</c:choose>
 		 			</div>
 		 			<div class="book-infos">
 		 				<center><b>${student.firstName} ${student.lName}</b></center>
