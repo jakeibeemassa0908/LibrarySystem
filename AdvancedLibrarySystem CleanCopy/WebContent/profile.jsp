@@ -30,7 +30,7 @@
  	<div class="container">
  		<div class="col-lg-2  book_detail_image"></div>
  		 <c:if test="${sessionScope.student.gender=='male'}">
- 			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/images/profile_empty_boy.png'/>">
+ 			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/getProfileImage?id=${sessionScope.student.studentId}'/>">
  			<a href="#" onclick="upload_image();"><center><span class="label label-danger">edit profile picture </span></center></a>
  			<a href="#" onclick="send_image()"><center><span class="label label-primary">save image</span></center></a>
  			

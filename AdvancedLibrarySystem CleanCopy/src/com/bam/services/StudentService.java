@@ -138,5 +138,11 @@ public class StudentService {
 		}
 		
 	}
+	
+	public byte[] getImage(int student_id){
+		List<Students> students = getStudent(student_id);
+		Students student=students.get(0);
+		return student.getProfile_picture();
+	}
 
 }
