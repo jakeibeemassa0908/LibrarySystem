@@ -30,7 +30,14 @@
  	<div class="container">
  		<div class="col-lg-2  book_detail_image"></div>
  		 <c:if test="${sessionScope.student.gender=='male'}">
- 			<div class="col-lg-3  book_detail_image"><img alt="" src="<c:url value='/images/profile_empty_boy.png'/>">
+ 			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/images/profile_empty_boy.png'/>">
+ 			<a href="#" onclick="upload_image();"><center><span class="label label-danger">edit profile picture </span></center></a>
+ 			<a href="#" onclick="send_image()"><center><span class="label label-primary">save image</span></center></a>
+ 			
+ 			<form method="post" action="<c:url value='/profileUpload'/>" enctype="multipart/form-data">
+ 				<input type="file" name="profile_picture" id="upload_button" style="visibility:hidden">
+ 				<input type="submit" id="send_image" style="visibility:hidden"/>
+ 			</form>
  		</c:if>
  		<c:if test="${sessionScope.student.gender=='female'}">
  			<div class="col-lg-3  book_detail_image"><img alt="" src="<c:url value='/images/profile_empty_girl.png'/>">
@@ -164,4 +171,32 @@
    
    
   </body>
+  	<script type="text/javascript">
+  	function upload_image(){
+  		$("#upload_button").click();
+  	}
+  	
+  	function send_image(){
+  		$("#send_image").click();
+  	}
+  	
+  	(function() {
+
+  	    var URL = window.URL || window.webkitURL;
+
+  	    var input = document.querySelector('#upload_button');
+  	    var preview = document.querySelector('#image_frame');
+  	    
+  	    // When the file input changes, create a object URL around the file.
+  	    input.addEventListener('change', function () {
+  	        preview.src = URL.createObjectURL(this.files[0]);
+  	    });
+  	    
+  	    // When the image loads, release object URL
+  	    preview.addEventListener('load', function () {
+  	        URL.revokeObjectURL(this.src);
+  	        
+  	    });
+  	})();
+	</script>
 </html>

@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +31,9 @@ public class Students {
 	private String gender;
 	@Temporal(TemporalType.DATE)
 	private Date registerDate;
+	@Lob
+	@Column(name="PROFILE_PICTURE", nullable=false, columnDefinition="mediumblob")
+	private byte[] profile_picture;
 	
 	@OneToMany(mappedBy="student",cascade=CascadeType.ALL)
 	@NotFound(action=NotFoundAction.IGNORE)
@@ -43,6 +48,12 @@ public class Students {
 	}
 	public void setBooking(Collection<Bookings> booking) {
 		this.booking = booking;
+	}
+	public byte[] getProfile_picture() {
+		return profile_picture;
+	}
+	public void setProfile_picture(byte[] profile_picture) {
+		this.profile_picture = profile_picture;
 	}
 	public Collection<Comments> getComments() {
 		return comments;

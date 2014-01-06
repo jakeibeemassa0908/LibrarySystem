@@ -117,5 +117,26 @@ public class StudentService {
 		}
 		return student_number;
 	}
+	
+	public void upload_picture(byte[] picture,int student_id){
+		Session session = null;
+		Students student=null;
+		try{
+			session=connection.getSession();
+			session.beginTransaction();
+			
+			student=(Students)session.load(Students.class, student_id);
+			student.setProfile_picture(picture);
+			
+			session.update(student);
+			session.getTransaction().commit();
+			
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		
+	}
 
 }

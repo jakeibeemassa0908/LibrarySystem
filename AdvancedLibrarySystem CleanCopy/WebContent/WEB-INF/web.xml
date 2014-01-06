@@ -41,16 +41,16 @@
     <url-pattern>/message_delete</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>Jersey Rest Service</servlet-name>
-  	<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-  	<init-param>
-  		<param-name>com.jersey.config.property.packages</param-name>
-  		<param-value>com.bam.rest</param-value>
-  	</init-param>
+    <servlet-name>Jersey Rest Service</servlet-name>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>com.jersey.config.property.packages</param-name>
+      <param-value>com.bam.rest</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>Jersey Rest Service</servlet-name>
-  	<url-pattern>/api/*</url-pattern>
+    <servlet-name>Jersey Rest Service</servlet-name>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>bookfilter</filter-name>
