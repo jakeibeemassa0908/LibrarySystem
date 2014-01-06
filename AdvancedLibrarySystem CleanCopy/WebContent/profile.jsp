@@ -32,7 +32,7 @@
  		 <c:if test="${sessionScope.student.gender=='male'}">
  			<div class="col-lg-3  book_detail_image"><img alt="" height="240" width="240" id="image_frame" src="<c:url value='/getProfileImage?id=${sessionScope.student.studentId}'/>">
  			<a href="#" onclick="upload_image();"><center><span class="label label-danger">edit profile picture </span></center></a>
- 			<a href="#" onclick="send_image()"><center><span class="label label-primary">save image</span></center></a>
+ 			<a href="#" onclick="send_image()" style="visibility:hidden" id="save_button"><center><span class="label label-primary">save image</span></center></a>
  			
  			<form method="post" action="<c:url value='/profileUpload'/>" enctype="multipart/form-data">
  				<input type="file" name="profile_picture" id="upload_button" style="visibility:hidden">
@@ -190,6 +190,7 @@
   	    // When the file input changes, create a object URL around the file.
   	    input.addEventListener('change', function () {
   	        preview.src = URL.createObjectURL(this.files[0]);
+  	        $("#save_button").css('visibility','visible');
   	    });
   	    
   	    // When the image loads, release object URL

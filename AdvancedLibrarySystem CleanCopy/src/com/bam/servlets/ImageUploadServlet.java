@@ -54,11 +54,6 @@ public class ImageUploadServlet extends HttpServlet {
 			FileItemFactory factory = new DiskFileItemFactory();
 			ServletFileUpload upload = new ServletFileUpload(factory);
 			List<FileItem> items = upload.parseRequest(request);
-			if(items.isEmpty()){
-				String path=request.getContextPath();
-				response.sendRedirect(path+"/profile/"+student_id);
-				return;
-			}
 			Iterator<FileItem> iter = items.iterator();
 			while (iter.hasNext()) {
 			    FileItem item = iter.next();
