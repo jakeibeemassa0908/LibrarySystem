@@ -19,10 +19,8 @@ import org.hibernate.criterion.Order;
 
 import com.bam.dto.Books;
 import com.bam.dto.Students;
+import com.bam.services.StudentService;
 
-/**
- * Servlet implementation class AdminStudents
- */
 @WebServlet("/admin_students")
 public class AdminStudents extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,48 +33,16 @@ public class AdminStudents extends HttpServlet {
 		}else{
 			dispatcher = request.getRequestDispatcher("admin_students_grid.jsp");
 		}
-		
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "admin_students");
-		//get all books form the database
 		List<Students> students;
-		SessionFactory sessionFactory =new Configuration().configure().buildSessionFactory();
-		Session session1 = sessionFactory.openSession();
-		session1.beginTransaction();
-		
-		Criteria criteria =session1.createCriteria(Students.class);
-		
-		boolean flag=false;
-		String q=request.getQueryString();
-		if(q!=null && q.equals("sort='id'")){
-			if (flag==false){
-			criteria =session1.createCriteria(Students.class)
-					.addOrder(Order.desc("StudentId"));
-			flag=true;
-			}else{
-				criteria =session1.createCriteria(Students.class)
-						.addOrder(Order.asc("StudentId"));
-				flag=false;
-			}
+		StudentService sc = new StudentService();
+		students=sc.getStudent(null);
+		if (!students.isEmpty()){
+			session.setAttribute("students",students);
 		}
-		
-		students=criteria.list();
-		if (students.isEmpty()){
-			
-		}
-		else{
-		session.setAttribute("students",students);
-		}
-		
-		session1.getTransaction().commit();
-		session1.close();
-		
 		dispatcher.forward(request, response);
 		return;
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

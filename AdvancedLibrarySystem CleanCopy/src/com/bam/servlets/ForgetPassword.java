@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.Students;
+import com.bam.services.DBConnection;
 
 /**
  * Servlet implementation class ForgetPassword
@@ -44,13 +46,20 @@ public class ForgetPassword extends HttpServlet {
 			return;
 		}
 		else{
-			SessionFactory sessionFactory =new Configuration().configure().buildSessionFactory();
-			Session session = sessionFactory.openSession();
-			session.beginTransaction();
-			
-			Criteria criteria =session.createCriteria(Students.class);
-			criteria.add(Restrictions.like("email", email));
-			List<Students> users= (List<Students>)criteria.list();
+			List<Students>  users=null;
+			Session session = null;
+			try{
+				DBConnection connection = new DBConnection();
+				session=connection.getSession();
+				session.beginTransaction();
+				Criteria criteria =session.createCriteria(Students.class);
+				criteria.add(Restrictions.like("email", email));
+				users= criteria.list();
+			}catch(HibernateException e){
+				e.printStackTrace();
+			}finally{
+				session.close();
+			}
 			
 			if (users.isEmpty()){
 				error="There is no such email registered in our site.";

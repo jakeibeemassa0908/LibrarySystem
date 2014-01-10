@@ -14,13 +14,6 @@ public class DBConnection {
     public Session getSession() {
           return factory.openSession();
     }
-
-    public void doWork() {
-         Session session = getSession();
-         // do work.
-         session.close();
-    }
-
    // Call this during shutdown
    public static void close() {
         factory.close();

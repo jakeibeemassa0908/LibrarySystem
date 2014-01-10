@@ -14,9 +14,6 @@ import javax.servlet.http.HttpSession;
 import com.bam.dto.Books;
 import com.bam.services.AddBookService;
 
-/**
- * Servlet implementation class BooksServlet
- */
 @WebServlet("/books")
 public class BooksServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,16 +23,9 @@ public class BooksServlet extends HttpServlet {
 		session.setAttribute("active_tab", "books");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
 		AddBookService abs = new AddBookService();
-		
 		List<Books> books = abs.getbooks(null, null, null, null, null, null);
 		session.setAttribute("books", books);
-		
 		dispatcher.forward(request, response);
 		return;
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
 }

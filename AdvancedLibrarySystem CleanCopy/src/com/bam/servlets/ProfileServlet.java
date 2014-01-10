@@ -27,78 +27,40 @@ import com.bam.services.StudentService;
 
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ProfileServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-
+ 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 				RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
-				//convert the given id in integer
+				HttpSession session =request.getSession();	
+				StudentService sc= new StudentService();
+				Students student=null;
 				int id=0;
 				try {
 					id = Integer.parseInt((String) request.getAttribute("Id"));
-				} catch (NumberFormatException e) {
-					
-					e.printStackTrace();
-				}
-				HttpSession session =request.getSession();
-						
-				StudentService sc= new StudentService();
-				
-				List<Students> student= sc.getStudent(id);
-				if (student.isEmpty()){
+					student = (Students) sc.getStudent(id).get(0);
+				} catch (Exception e) {
 					String path=request.getContextPath();
 					response.sendRedirect(path+"/error");
 					return;
 				}
-				else{
-					
-					session.setAttribute("student", student.get(0));
-					Students student2=null;
-						//If student account is logged in
+					session.setAttribute("student", student);
 						if(session.getAttribute("user")!=null){
 							Students studentLoggedIn= (Students) session.getAttribute("user"); 
-							student2=(Students) session.getAttribute("user");
 							//avoid student poking around student db by changing ids.
-							if(student.get(0).getStudentId()!= studentLoggedIn.getStudentId()){
+							if(student.getStudentId()!= studentLoggedIn.getStudentId()){
 								String path=request.getContextPath();
 								response.sendRedirect(path+"/error");
 								return;
 							}
-						}else{
-							student2=student.get(0);
-							}
+						}
 						BookingService bs= new BookingService();
-						List<Bookings> bookings=bs.getBookings(student2, null);
-						
-						if(bookings.isEmpty()){
-							session.setAttribute("bookings", null);
-						}else{
+						List<Bookings> bookings=bs.getBookings(student, null);
+						if(!bookings.isEmpty()){
 							session.setAttribute("bookings", bookings);
 						}
-					}
-	
-					
-					
 					session.setAttribute("active_tab", "profile");
 					session.setAttribute("now", new Date());
 					dispatcher.forward(request, response);
 					return;
-				
-				
-				
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

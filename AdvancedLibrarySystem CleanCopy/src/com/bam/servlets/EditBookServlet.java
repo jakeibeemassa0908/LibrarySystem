@@ -21,9 +21,6 @@ import com.bam.services.AddBookService;
 public class EditBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		int bookId=0;
@@ -33,7 +30,6 @@ public class EditBookServlet extends HttpServlet {
 			response.sendRedirect("error");
 			return;
 		}else{
-			
 		try {
 			 bookId= Integer.parseInt(request.getParameter("bookId"));
 			 book=bs.getbooks(bookId, null, null, null, null, null).get(0);
@@ -47,19 +43,15 @@ public class EditBookServlet extends HttpServlet {
 		request.setAttribute("book", book);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("edit_book.jsp");
 		dispatcher.forward(request, response);
+		return;
 		}
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String,String[]> map = request.getParameterMap();
-		int bookId=Integer.parseInt(request.getParameter("id"))
-				;
+		int bookId=Integer.parseInt(request.getParameter("id"));
 		AddBookService abs= new AddBookService();
 		abs.editBook(map, bookId);
-		
 		response.sendRedirect("book_detail/"+bookId);
 		return;
 		

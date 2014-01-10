@@ -19,35 +19,23 @@ import com.bam.services.AddBookService;
 @WebServlet("/add_piece")
 public class AddBookPiecesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		AddBookService abs= new AddBookService();
-		String bookId= request.getParameter("id");
-		int bookIdInt=Integer.parseInt(bookId);
-		
-		List<Books> book;
-		
-		book=abs.getbooks(bookIdInt, null, null, null, null, null);
-		if(book.isEmpty()){
-			
-		}else{
-			int pieces=book.get(0).getStock_number();
-			abs.addBookPieces(pieces,bookIdInt);
-			
-			response.sendRedirect("admin_books");
+		try{
+			String bookId= request.getParameter("id");
+			int bookIdInt=Integer.parseInt(bookId);
+			List<Books> book;
+			book=abs.getbooks(bookIdInt, null, null, null, null, null);
+			if(!book.isEmpty()){
+				int pieces=book.get(0).getStock_number();
+				abs.addBookPieces(pieces,bookIdInt);
+				response.sendRedirect("admin_books");
+				return;
+			}
+		}catch(Exception e){
+			response.sendRedirect("error");
 			return;
 		}
-		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

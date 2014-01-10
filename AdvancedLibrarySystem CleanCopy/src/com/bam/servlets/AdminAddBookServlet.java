@@ -17,9 +17,6 @@ import com.bam.services.AddBookService;
 import com.bam.services.HelperClass;
 import com.bam.services.RegisterService;
 
-/**
- * Servlet implementation class AdminAddBookServlet
- */
 @WebServlet("/add_book")
 public class AdminAddBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,16 +29,13 @@ public class AdminAddBookServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//get all the parameters from the request and validate them
 		Map<String, String[]> map = (Map<String, String[]>)request.getParameterMap();
 		ArrayList<String> error = new ArrayList<String>();
-		//send back the parameters to the request so that they will stay on the form 
 		for(Map.Entry<String, String[]> entry : map.entrySet()){
 			request.setAttribute(entry.getKey(),entry.getValue()[0]);
 		}
 		HelperClass hc = new HelperClass();
 		error = hc.validate(map);
-		//if it comes back with no error, save it to the db, if it does tell the user
 				if (error.isEmpty()){
 					AddBookService bookService = new AddBookService();
 					if(bookService.checkAvailableBook(map))
@@ -49,7 +43,6 @@ public class AdminAddBookServlet extends HttpServlet {
 						try {
 							bookService.saveData(map);
 						} catch (ParseException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						response.sendRedirect("admin_books");
@@ -66,10 +59,6 @@ public class AdminAddBookServlet extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher("add_book.jsp");
 					rd.forward(request, response);
 				}
-				
-				
-
-
 	}
 
 }

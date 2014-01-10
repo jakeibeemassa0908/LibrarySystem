@@ -18,6 +18,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.Books;
+import com.bam.services.AddBookService;
 
 @WebServlet("/admin_books")
 public class AdminBooksServlet extends HttpServlet {
@@ -32,33 +33,15 @@ public class AdminBooksServlet extends HttpServlet {
 		}else{
 			dispatcher = request.getRequestDispatcher("admin_books_grid.jsp");
 		}
-		
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "admin_books");
-		
-		//get all books form the database
-		List<Books> books;
-		SessionFactory sessionFactory =new Configuration().configure().buildSessionFactory();
-		Session session1 = sessionFactory.openSession();
-		session1.beginTransaction();
-		
-		Criteria criteria =session1.createCriteria(Books.class);
-		books=criteria.list();
-		if (books.isEmpty()){
-			
+		AddBookService abs = new AddBookService();
+		List<Books> books=abs.getbooks(null, null, null, null, null, null);
+		if (!books.isEmpty()){	
+			session.setAttribute("books", books);
 		}
-		else{
-		session.setAttribute("books", books);
-		}
-		session1.getTransaction().commit();
-		session1.close();
 		dispatcher.forward(request, response);
 		return;
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

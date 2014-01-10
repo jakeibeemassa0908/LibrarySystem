@@ -31,34 +31,22 @@ public class SearchServlet extends HttpServlet {
 		String query=(String) request.getParameter("search_query");
 		HelperClass hc = new HelperClass();
 		query=hc.escapeHtml(query);
-		
-		List<Books> books;
 		AddBookService abs = new AddBookService();
-		books=abs.searchBooks(query,null);
+		List<Books> books=abs.searchBooks(query,null);
 		
 		if(session.getAttribute("admin")!=null){
-			List<Students> students;
 			StudentService sc= new StudentService();
-			students=sc.searchStudent(query);
-			
-			if(students.isEmpty()){
-				students=null;
-			}else{
+			List<Students> students=sc.searchStudent(query);
+			if(!students.isEmpty()){
 				request.setAttribute("students", students);
 			}
 		}
-		
 		if(books.isEmpty()){
 			books=null;
 		}
 		request.setAttribute("books", books);
 		request.setAttribute("search_query", query);
 		rd.forward(request, response);
-	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

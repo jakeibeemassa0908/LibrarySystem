@@ -21,41 +21,33 @@ import org.hibernate.criterion.Restrictions;
 
 public class StudentService {
 	DBConnection connection = new DBConnection();
-	//Function to return the list of students
 	public List getStudent(Integer id){
 		List<Students> students=null;
-		
 		Session session1=null;
 		try {
 			session1 = connection.getSession();
 			session1.beginTransaction();
-			//get Student 
 			Criteria criteria =session1.createCriteria(Students.class);
 			if (id!=null){
 				criteria.add(Restrictions.like("StudentId", id));
 			}
 			students=criteria.list();
-			
 			session1.getTransaction().commit();
 		} catch (HibernateException e) {
 			System.out.println(e);
 		}finally{
 			session1.close();
-			
 		}
-		
 		return students;
-		
 	}
+	
 	public List<Students> searchStudent(String query){
 		List<Students> students=null;
 		Session session= null;
 		try{
 			session= connection.getSession();
-			session.beginTransaction();
-			
+			session.beginTransaction();		
 			Criteria criteria = session.createCriteria(Students.class);
-			
 			if(query!=null){
 				criteria.add(Restrictions.disjunction()
 						.add(Restrictions.ilike("firstName", "%"+ query +"%"))
@@ -68,7 +60,6 @@ public class StudentService {
 			System.out.println(e);
 		}finally{
 			session.close();
-			
 		}
 		return students;
 	}
@@ -79,7 +70,6 @@ public class StudentService {
 		try{
 			session=connection.getSession();
 			session.beginTransaction();
-			
 			student=(Students) session.load(Students.class, studentId);
 			student.setFirstName(map.get("fName")[0]);
 			student.setlName(map.get("lName")[0]);
@@ -87,9 +77,7 @@ public class StudentService {
 			student.setProgram(map.get("program")[0]);
 			student.setPhoneNumber(Long.parseLong(map.get("phoneNumber")[0]));
 			student.setGender(map.get("gender")[0]);
-			
 			session.update(student);
-			
 			session.getTransaction().commit();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -104,12 +92,9 @@ public class StudentService {
 		try{
 			session = connection.getSession();
 			session.beginTransaction();
-			
 			student_number=(long) session.createCriteria(Students.class)
 					.setProjection((Projections.count("StudentId"))).uniqueResult();
-			
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
@@ -124,19 +109,15 @@ public class StudentService {
 		try{
 			session=connection.getSession();
 			session.beginTransaction();
-			
 			student=(Students)session.load(Students.class, student_id);
 			student.setProfile_picture(picture);
-			
 			session.update(student);
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
 			session.close();
 		}
-		
 	}
 	
 	public byte[] getImage(int student_id){
@@ -144,5 +125,4 @@ public class StudentService {
 		Students student=students.get(0);
 		return student.getProfile_picture();
 	}
-
 }

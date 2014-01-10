@@ -24,14 +24,13 @@ import org.hibernate.criterion.Restrictions;
 
 public class ReviewService {
 	DBConnection connection = new DBConnection();
-	//function to get a review 
+	
 	public List<Comments> getReview(Integer id, Books book, Students student, Integer number){
 		Session session1=null;
 		List<Comments> reviews=null;
 		try {
 			session1 =connection.getSession();
 			session1.beginTransaction();
-			
 			Criteria criteria =session1.createCriteria(Comments.class);
 			if(id!=null){
 				criteria.add(Restrictions.like("commentID", id));
@@ -47,28 +46,21 @@ public class ReviewService {
 			}
 			criteria.addOrder(Order.desc("commentID"));
 			reviews = (List<Comments>) criteria.list();
-			
 			session1.getTransaction().commit();
 		} catch (HibernateException e) {
-			
 			e.printStackTrace();
-			System.out.println(e);
 		}finally{
 			session1.close();
-			
 		}
 		return reviews;
-	
 	}
 	
-	//function to save a review
-	public void saveReview(Map<String, String[]> map,Books book, Students student){
-		
+	
+	public void saveReview(Map<String, String[]> map,Books book, Students student){	
 		Session session=null;
 		try {
 			session = connection.getSession();
 			session.beginTransaction();
-			
 			Comments comment = new Comments();
 			comment.setBook(book);
 			comment.setCommentContent(map.get("comment_content")[0]);
@@ -76,74 +68,61 @@ public class ReviewService {
 			comment.setCommentDate(new Date());
 			comment.setCommentUserName(student.getFirstName() + " "+ student.getlName());
 			comment.setStudent(student);
-			
 			session.save(comment);
-			
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
 	}
-	//function to delete a single review from its ID
+	
 	public void deleteReview(int reviewId){
 		Session session = null;
 		try{
 			session=connection.getSession();
-			session.beginTransaction();
-			
+			session.beginTransaction();		
 			Comments comment= (Comments)session.load(Comments.class,reviewId);
 			session.delete(comment);
-			
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
 			session.close();
 		}
 	}
-	//function to delete all reviews of a given book
+	
 	public void deleteReviews(Books book){
 		Session session = null;
 		List<Comments> comments=null;
 		try{
 			session=connection.getSession();
-			session.beginTransaction();
-			
+			session.beginTransaction();		
 			comments=getReview(null,book, null,null);
-			if(comments.isEmpty()){
-				
-			}else{
+			if(!comments.isEmpty()){
 				for(Comments comment:comments){
 					session.delete(comment);
 				}
 			}
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
 			session.close();
 		}
 	}
-	//function to get the number of reviews for a given book
+	
 	public long getReviewSize(Books book){
 		Session session=null;
 		long number=0;
 		try{
 			session = connection.getSession();
-			session.beginTransaction();
-			
+			session.beginTransaction();		
 			number = (Long) session.createCriteria(Comments.class)
 					.add(Restrictions.like("book", book))
 					.setProjection(Projections.count("commentID"))
 					.uniqueResult();
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{

@@ -14,9 +14,6 @@ import javax.servlet.http.HttpSession;
 import com.bam.dto.Students;
 import com.bam.services.StudentService;
 
-/**
- * Servlet implementation class EditProfileServlet
- */
 @WebServlet("/edit_profile")
 public class EditProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +35,7 @@ public class EditProfileServlet extends HttpServlet {
 			}else{
 				String path=request.getContextPath();
 				response.sendRedirect(path+"/error");
+				return;
 			}
 			
 		}catch(Exception e){
@@ -45,9 +43,6 @@ public class EditProfileServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String,String[]> map=null;
 		HttpSession session = request.getSession();
@@ -57,12 +52,9 @@ public class EditProfileServlet extends HttpServlet {
 			map=request.getParameterMap();
 			sc.edit(map,student.getStudentId());
 			student=(Students) sc.getStudent(student.getStudentId()).get(0);
-			
 			session.setAttribute("user", student);
-			
 			response.sendRedirect("profile/"+student.getStudentId());
 			return;
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

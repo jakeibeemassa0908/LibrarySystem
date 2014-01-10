@@ -13,9 +13,6 @@ import javax.servlet.http.HttpSession;
 import com.bam.services.AddBookService;
 import com.bam.services.StudentService;
 
-/**
- * Servlet implementation class AdminHomeServlet
- */
 @WebServlet("/admin_home")
 public class AdminHomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,21 +29,14 @@ public class AdminHomeServlet extends HttpServlet {
 			student_number=sc.student_count();
 			book_number=abs.book_count();
 			book_pieces_number=abs.book_piece_count();
-			
-			
 			request.setAttribute("student_number", student_number);
 			request.setAttribute("book_number", book_number);
 			request.setAttribute("book_pieces_number", book_pieces_number);
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		dispatcher.forward(request, response);
 		return;
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

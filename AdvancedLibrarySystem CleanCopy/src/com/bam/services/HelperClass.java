@@ -10,9 +10,7 @@ import static org.apache.commons.lang3.StringEscapeUtils.*;
 public class HelperClass {
 
 	public ArrayList<String> validate(Map <String, String[]> map){
-		
 		ArrayList<String> error= new ArrayList<String>();
-		
 		for (Map.Entry<String, String[]> entry : map.entrySet())
 		{
 			if(entry.getValue()[0].isEmpty() || entry.getValue()[0].equals("None")){
@@ -49,10 +47,9 @@ public class HelperClass {
 	    } 
 	    return byteArrayToHexString(md.digest(convertme));
 	}
+	
 	public String escapeHtml(String toEscape){
-		
 		String escaped= escapeHtml4(toEscape);
 		return escaped;
 	}
-	
 }

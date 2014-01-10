@@ -23,57 +23,45 @@ import com.bam.services.StudentService;
 
 
 
-/**
- * Servlet implementation class ImageUploadServlet
- */
 @WebServlet("/profileUpload")
 public class ImageUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.sendRedirect("error");
+		return;
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StudentService sc = new StudentService();
 		HttpSession session = request.getSession();
 		Students student = (Students)session.getAttribute("user");
 		int student_id=student.getStudentId();
-		
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if (isMultipart){
-		byte[] picture=null;
-		
-		try {
-			FileItemFactory factory = new DiskFileItemFactory();
-			ServletFileUpload upload = new ServletFileUpload(factory);
-			List<FileItem> items = upload.parseRequest(request);
-			Iterator<FileItem> iter = items.iterator();
-			while (iter.hasNext()) {
-			    FileItem item = iter.next();
-
-			    if (!item.isFormField()) {
-			        picture=item.get();
-			    } 
+				byte[] picture=null;
+			try {
+				FileItemFactory factory = new DiskFileItemFactory();
+				ServletFileUpload upload = new ServletFileUpload(factory);
+				List<FileItem> items = upload.parseRequest(request);
+				Iterator<FileItem> iter = items.iterator();
+				while (iter.hasNext()) {
+				    FileItem item = iter.next();
+				    if (!item.isFormField()) {
+				        picture=item.get();
+				    } 
+				}
+			} catch (FileUploadException e) {
+				e.printStackTrace();
 			}
-			
-		} catch (FileUploadException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sc.upload_picture(picture, student_id);
-		String path=request.getContextPath();
-		response.sendRedirect(path+"/profile/"+student_id);
-		return;
+			sc.upload_picture(picture, student_id);
+			String path=request.getContextPath();
+			response.sendRedirect(path+"/profile/"+student_id);
+			return;
 		}
 		else{
 			response.sendRedirect("/error");
+			return;
 		}
 	}
 

@@ -18,25 +18,19 @@ public class RegisterService {
 	DBConnection connection = new DBConnection();
 	public boolean checkAvailableUser(String email){
 		List<Students> users=null;
-		
 		Session session=null;
 		try {
 			session =connection.getSession();
 			session.beginTransaction();
-			
 			Criteria criteria =session.createCriteria(Students.class);
 			criteria.add(Restrictions.like("email", email));
-			
 			users= (List<Students>)criteria.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
-		
 		if (users.isEmpty()){
 			return true;
 		}
@@ -44,7 +38,6 @@ public class RegisterService {
 	}
 	
 	public void saveData(Map<String, String[]> map){
-		
 		Session session=null;
 		try {
 			session = connection.getSession();
@@ -60,12 +53,9 @@ public class RegisterService {
 			st.setRegisterDate(new Date());
 			byte[] pic={};
 			st.setProfile_picture(pic);
-			
 			String passwordEncrypted= hc.toSHA1(map.get("password")[0].getBytes());
 			st.setPassword(passwordEncrypted);
-			
 			session.save(st);
-			
 			session.getTransaction().commit();
 		} catch (NumberFormatException e) {
 			System.out.println(e);
@@ -75,7 +65,6 @@ public class RegisterService {
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
 	}
 }

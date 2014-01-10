@@ -18,25 +18,19 @@ public class LibraryRegisterService {
 	DBConnection connection = new DBConnection();
 	public boolean checkAvailableUser(String email){
 		List<Library> users=null;
-		
 		Session session=null;
 		try {
 			session = connection.getSession();
 			session.beginTransaction();
-			
 			Criteria criteria =session.createCriteria(Library.class);
 			criteria.add(Restrictions.like("libraryEmail", email));
-			
 			users= (List<Library>)criteria.list();
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
-		
 		if (users.isEmpty()){
 			return true;
 		}
@@ -44,8 +38,7 @@ public class LibraryRegisterService {
 	}
 	
 	public void saveData(Map<String, String[]> map){
-		Session session=null;
-		
+		Session session=null;	
 		try {
 			session = connection.getSession();
 			session.beginTransaction();
@@ -56,9 +49,7 @@ public class LibraryRegisterService {
 			lib.setLibraryPhoneNumber(Long.parseLong(map.get("libraryPhoneNumber")[0]));
 			String passwordEncrypted= hc.toSHA1(map.get("libraryPassword")[0].getBytes());
 			lib.setLibraryPassword(passwordEncrypted);
-			
 			session.save(lib);
-			
 			session.getTransaction().commit();
 		} catch (NumberFormatException e) {
 			System.out.println(e);
@@ -68,7 +59,6 @@ public class LibraryRegisterService {
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
 	}
 }

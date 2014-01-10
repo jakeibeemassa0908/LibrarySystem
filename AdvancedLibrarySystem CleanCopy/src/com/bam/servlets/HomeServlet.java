@@ -24,56 +24,34 @@ import com.bam.dto.Bookings;
 import com.bam.dto.Students;
 import com.bam.services.BookingService;
 
-/**
- * Servlet implementation class HomeServlet
- */
 @WebServlet(description = "")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public HomeServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			HttpSession session = request.getSession();
 			RequestDispatcher dispatcher=null;
-			
-			//if the the user is connected do the following
 			if(session.getAttribute("user")!=null){
 				dispatcher = request.getRequestDispatcher("home.jsp");
-				List <Bookings> bookings;
 				List<Bookings>bookingsToLoad=new ArrayList<Bookings>();
 				BookingService bs = new BookingService();
-				bookings=bs.getBookings((Students)session.getAttribute("user"), null);
-				
+				List<Bookings>bookings=bs.getBookings((Students)session.getAttribute("user"), null);
 				for(int i=0;i<bookings.size();i++){
 					if(bookings.get(i).isReturned()==false){
 						bookingsToLoad.add(bookings.get(i));
 					}
 				}
 				bookings=bookingsToLoad;
-				
 				session.setAttribute("bookingsHome", bookings);
 				request.setAttribute("now", new Date());
 				
-			//if the admin is connected	
 			}else if(session.getAttribute("admin")!=null){
 				dispatcher = request.getRequestDispatcher("home_admin.jsp");
 			}else{
 				dispatcher = request.getRequestDispatcher("index.jsp");
 			}
-			
 			dispatcher.forward(request, response);
 			return;
-	}
-		
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

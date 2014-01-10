@@ -35,15 +35,13 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session= request.getSession();
 			session.setAttribute("active_tab", "login");
 			dispatcher.forward(request, response);
-			return;
-		
+			return;	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			DBConnection connection = new DBConnection();
 			String email= (String)request.getParameter("email");
 			String password=(String) request.getParameter("password");
-			
 			if(email.isEmpty() || password.isEmpty()){
 				String errorString = "User Name or Password cannot be left blank";
 				RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");
@@ -51,32 +49,28 @@ public class LoginServlet extends HttpServlet {
 				dispatcher.forward(request, response);
 				return;
 			}
-			
 			else{
 				Session session=null;
+				List<Students> users=null;
+				List<Library> admin=null;
 				try {
 					session = connection.getSession();
 					session.beginTransaction();
-					
 					HelperClass hc = new HelperClass();
-					
-					//Check the Student Table
 					Criteria criteria =session.createCriteria(Students.class)
 							.add(Restrictions.like("email", email))
 							.add(Restrictions.like("password",hc.toSHA1(password.getBytes())));
-					
-					//Check the Library Table
 					Criteria criteria2 = session.createCriteria(Library.class)
 							.add(Restrictions.like("libraryUserName", email))
 							.add(Restrictions.like("libraryPassword",hc.toSHA1(password.getBytes())));
-					List<Students> users=null;
-					List<Library> admin=null;
-					
-					users= (List<Students>)criteria.list();
-					admin = (List<Library>)criteria2.list();
-					
-					
-					//if the username entered by the user isn't found in the db
+					users=criteria.list();
+					admin= criteria2.list();
+					session.getTransaction().commit();
+				} catch (HibernateException e) {
+					e.printStackTrace();
+				}finally{
+					session.close();
+				}
 					if(users.isEmpty() && admin.isEmpty()){
 						String errorString = "User Name or Password is incorect";
 						RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");
@@ -85,24 +79,19 @@ public class LoginServlet extends HttpServlet {
 						return;
 					}
 					else{
-					//set session with the user or the library admin selected
-					HttpSession httpSession = request.getSession();
-					if(users.size()!=0){
-						httpSession.setAttribute("user", users.get(0));
-						response.sendRedirect("");
+						HttpSession httpSession = request.getSession();
+						if(users.size()!=0){
+							httpSession.setAttribute("user", users.get(0));
+							response.sendRedirect("");
+							return;
+						}
+						else if (admin.size()!=0){
+							httpSession.setAttribute("admin", admin.get(0));
+							response.sendRedirect("admin_home");
+							return;
+						}
 					}
-					else if (admin.size()!=0){
-						httpSession.setAttribute("admin", admin.get(0));
-						response.sendRedirect("admin_home");
-					}
-					}
-					session.getTransaction().commit();
-				} catch (HibernateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}finally{
-					session.close();
-				}
+				
 			}
 	}
 

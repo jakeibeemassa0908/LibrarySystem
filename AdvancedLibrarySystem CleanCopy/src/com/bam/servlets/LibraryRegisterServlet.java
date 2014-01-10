@@ -26,44 +26,34 @@ public class LibraryRegisterServlet extends HttpServlet {
 		HttpSession session= request.getSession();
 		session.setAttribute("active_tab", "lib_register");
 		dispatcher.forward(request, response);
+		return;
 		
 	}
 
 	@SuppressWarnings("finally")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//get all the parameters from the request and validate them
 		Map<String, String[]> map = (Map<String, String[]>)request.getParameterMap();
 		ArrayList<String> error = new ArrayList<String>();
-		
-		//send back the parameters to the request so that they wil stay on the form 
 		for(Map.Entry<String, String[]> entry : map.entrySet()){
 			request.setAttribute(entry.getKey(),entry.getValue()[0]);
 		}
-		
-		
-		//pass the parameters to the helper class for validation
 		HelperClass hc = new HelperClass();
 		error = hc.validate(map);
 		boolean isMatch=(hc.matchPasswords(map.get("libraryPassword")[0], map.get("re-password")[0]));
 		if (isMatch==false){
-			error.add("Passwords didn't match");
-			
+			error.add("Passwords didn't match");	
 		}
-		//if it comes back with no error, save it to the db, if it does tell the user
 		if (error.isEmpty()){
 			LibraryRegisterService rs = new LibraryRegisterService();
 			if(rs.checkAvailableUser(request.getParameter("libraryEmail")))
 			{
-				
 				String[]encrypted=new String[1];
 				try{
 					encrypted[0]=hc.toSHA1(map.get("libraryPassword")[0].getBytes());
 				}
-				
-				catch (ArrayIndexOutOfBoundsException exception){
-					System.out.print("No value received from password "+ exception);
+				catch (ArrayIndexOutOfBoundsException e){
+					e.printStackTrace();
 				}
-				
 				finally{
 				rs.saveData(map);
 				String message= "Thank you for Registering with us, Our team will contact you shortly for verification purpose.";
@@ -78,12 +68,14 @@ public class LibraryRegisterServlet extends HttpServlet {
 				request.setAttribute("error", error.get(0));
 				RequestDispatcher rd = request.getRequestDispatcher("registerlibrary.jsp");
 				rd.forward(request, response);
+				return;
 			}
 		}
 		else{
 			request.setAttribute("error", error.get(0));
 			RequestDispatcher rd = request.getRequestDispatcher("registerlibrary.jsp");
 			rd.forward(request, response);
+			return;
 		}
 	}
 

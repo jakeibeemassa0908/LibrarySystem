@@ -20,11 +20,11 @@ import org.hibernate.criterion.Restrictions;
 
 public class MessageService {
 	DBConnection connection = new DBConnection();
+	
 	public void saveData(Map<String, String[]> map, int from, int to, String fromName, String toName) throws ParseException{
 		Session session=null;
 		try {
 			session = connection.getSession();
-			
 			session.beginTransaction();
 			Messages msg = new Messages();
 			msg.setMessageContent(map.get("content")[0]);
@@ -35,28 +35,22 @@ public class MessageService {
 			msg.setMessageFromString(fromName);
 			msg.setMessageToString(toName);
 			msg.setOpenFlag(false);
-
-			
 			session.save(msg);
-			
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
 			System.out.println(e);
 			e.printStackTrace();
 		}finally{
 			session.close();
-			
 		}
-		
 	}
+	
 	public List<Messages> getMessages(Integer from, Integer to,Integer id,Integer asker){
 		List<Messages> messages=null;
 		Session session1=null;
 		try {
 			session1 = connection.getSession();
 			session1.beginTransaction();
-
-			//get messages that are sent by the current student ID
 			Criteria criteria =session1.createCriteria(Messages.class);
 			if (from != null){
 				criteria.add(Restrictions.like("messageFrom",from));
@@ -76,36 +70,28 @@ public class MessageService {
 				}
 			}
 			messages=criteria.list();
-			
 			session1.getTransaction().commit();
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 		session1.close();
-		
 		}
 		return messages;
-		
 	}
+	
 	public void updateMessage(Integer id){
 		Session session1=null;
 		try {
 			session1 = connection.getSession();
 			session1.beginTransaction();
-			
 			Messages message= (Messages) session1.load(Messages.class, id);
 			message.setOpenFlag(true);
-			
 			session1.update(message);
 			session1.getTransaction().commit();
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-		
 		session1.close();
-		
 		}
 	}
 	
@@ -115,14 +101,11 @@ public class MessageService {
 		try{
 			session=connection.getSession();
 			session.beginTransaction();
-			
 			messages_number= (long) session.createCriteria(Messages.class)
 					.add(Restrictions.like("openFlag", false))
 					.add(Restrictions.like("messageTo", receiver))
 					.setProjection(Projections.count("messageId")).uniqueResult();
-			
 			session.getTransaction().commit();
-			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
@@ -145,13 +128,9 @@ public class MessageService {
 			session1.update(message);
 			session1.getTransaction().commit();
 		} catch (HibernateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-		
 		session1.close();
-		
 		}
-		
 	}
 }
