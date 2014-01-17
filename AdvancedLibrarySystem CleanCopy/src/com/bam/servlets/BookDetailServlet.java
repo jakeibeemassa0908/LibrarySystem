@@ -7,17 +7,24 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
+
 import com.bam.dto.BookPieces;
 import com.bam.dto.Books;
 import com.bam.dto.Comments;
 import com.bam.dto.Students;
-import com.bam.services.BookService;
-import com.bam.helper.*;
+import com.bam.services.AddBookService;
+import com.bam.services.HelperClass;
 import com.bam.services.ReviewService;
 
 /**
@@ -36,7 +43,7 @@ public class BookDetailServlet extends HttpServlet {
 		}
 		HttpSession session =request.getSession();
 		session.setAttribute("active_tab", "books");
-		BookService abs = new BookService();
+		AddBookService abs = new AddBookService();
 		List<Books> book= abs.getbooks(id, null, null, null, null, null);
 		if (book.isEmpty()){
 			String path=request.getContextPath();
@@ -72,9 +79,10 @@ public class BookDetailServlet extends HttpServlet {
 				}
 				String id= request.getParameter("id");
 				int idInt=Integer.parseInt(id);
-				ArrayList<String>error = HelperClass.validate(map);
+				HelperClass hc = new HelperClass();
+				ArrayList<String>error = hc.validate(map);
 				if (error.isEmpty()){
-					BookService abs = new BookService();
+					AddBookService abs = new AddBookService();
 					Books book=abs.getbooks(idInt, null, null, null, null, null).get(0);
 					Students student= (Students) session.getAttribute("user");
 					ReviewService rs= new ReviewService();

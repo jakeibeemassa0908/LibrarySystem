@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bam.dto.Books;
-import com.bam.services.BookService;
+import com.bam.services.AddBookService;
 
 /**
  * Servlet implementation class EditBookServlet
@@ -25,7 +25,7 @@ public class EditBookServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		int bookId=0;
 		Books book=null;
-		BookService bs= new BookService();
+		AddBookService bs= new AddBookService();
 		if(session.getAttribute("admin")==null){
 			response.sendRedirect("error");
 			return;
@@ -50,7 +50,7 @@ public class EditBookServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String,String[]> map = request.getParameterMap();
 		int bookId=Integer.parseInt(request.getParameter("id"));
-		BookService abs= new BookService();
+		AddBookService abs= new AddBookService();
 		abs.editBook(map, bookId);
 		response.sendRedirect("book_detail/"+bookId);
 		return;

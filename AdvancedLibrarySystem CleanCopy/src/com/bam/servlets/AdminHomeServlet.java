@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.bam.services.BookService;
+import com.bam.services.AddBookService;
 import com.bam.services.StudentService;
 
 @WebServlet("/admin_home")
@@ -19,7 +19,7 @@ public class AdminHomeServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		StudentService sc = new StudentService();
-		BookService abs = new BookService();
+		AddBookService abs = new AddBookService();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("home_admin.jsp");
 		HttpSession session =request.getSession();
 		session.setAttribute("active_tab", "admin_home");

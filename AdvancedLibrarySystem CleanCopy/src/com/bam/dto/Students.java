@@ -29,7 +29,6 @@ public class Students {
 	private String email;
 	private long phoneNumber;
 	private String gender;
-	private String library;
 	@Temporal(TemporalType.DATE)
 	private Date registerDate;
 	@Lob
@@ -121,12 +120,6 @@ public class Students {
 	}
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
-	}
-	public String getLibrary() {
-		return library;
-	}
-	public void setLibrary(String library) {
-		this.library = library;
 	}
 	
 	

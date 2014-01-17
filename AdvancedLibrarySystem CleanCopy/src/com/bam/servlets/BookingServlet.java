@@ -16,7 +16,7 @@ import com.bam.dto.BookPieces;
 import com.bam.dto.Bookings;
 import com.bam.dto.Books;
 import com.bam.dto.Students;
-import com.bam.services.BookService;
+import com.bam.services.AddBookService;
 import com.bam.services.BookingService;
 
 /**
@@ -37,7 +37,7 @@ public class BookingServlet extends HttpServlet {
 			request.setAttribute("error", "You have already reached the Limit of 4 Books");
 		}
 		BookingService bs= new BookingService();
-		BookService abs = new BookService();
+		AddBookService abs = new AddBookService();
 		if(session.getAttribute("user")!=null){
 			if(request.getParameter("cancel")!=null){
 				int Id=Integer.parseInt(request.getParameter("cancel"));
@@ -76,7 +76,7 @@ public class BookingServlet extends HttpServlet {
 		HttpSession session= request.getSession();
 		Students student= (Students)session.getAttribute("user");
 		BookingService bs = new BookingService();
-		BookService abs = new BookService();
+		AddBookService abs = new AddBookService();
 		boolean userCanBook=bs.checkUserCanBook(student);
 		if(!userCanBook){
 			String error="limit";

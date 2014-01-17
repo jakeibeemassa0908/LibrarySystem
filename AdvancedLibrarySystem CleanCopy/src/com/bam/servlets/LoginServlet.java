@@ -14,11 +14,14 @@ import javax.servlet.http.HttpSession;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.Library;
 import com.bam.dto.Students;
-import com.bam.helper.*;
+import com.bam.services.HelperClass;
+import com.bam.services.DBConnection;
 
 /**
  * Servlet implementation class LoginServlet
@@ -53,12 +56,13 @@ public class LoginServlet extends HttpServlet {
 				try {
 					session = connection.getSession();
 					session.beginTransaction();
+					HelperClass hc = new HelperClass();
 					Criteria criteria =session.createCriteria(Students.class)
 							.add(Restrictions.like("email", email))
-							.add(Restrictions.like("password",HelperClass.toSHA1(password.getBytes())));
+							.add(Restrictions.like("password",hc.toSHA1(password.getBytes())));
 					Criteria criteria2 = session.createCriteria(Library.class)
 							.add(Restrictions.like("libraryUserName", email))
-							.add(Restrictions.like("libraryPassword",HelperClass.toSHA1(password.getBytes())));
+							.add(Restrictions.like("libraryPassword",hc.toSHA1(password.getBytes())));
 					users=criteria.list();
 					admin= criteria2.list();
 					session.getTransaction().commit();

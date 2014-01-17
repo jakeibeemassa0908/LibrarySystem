@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.bam.dto.Books;
 import com.bam.dto.Comments;
 import com.bam.dto.Students;
-import com.bam.services.BookService;
+import com.bam.services.AddBookService;
 import com.bam.services.ReviewService;
 
 /**
@@ -27,7 +27,7 @@ public class DeleteServlet extends HttpServlet {
 		if(request.getParameter("bookId")!=null){
 			if(session.getAttribute("admin")!=null){
 				int bookId=Integer.parseInt(request.getParameter("bookId"));
-				BookService abs = new BookService();
+				AddBookService abs = new AddBookService();
 				Books book=abs.getbooks(bookId, null, null, null, null, null).get(0);
 				abs.deleteBook(book);
 				response.sendRedirect("admin_books");

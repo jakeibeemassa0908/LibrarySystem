@@ -85,16 +85,6 @@
       <input type="text" class="form-control" id="inputEmail4" placeholder="Phone Number" name="phoneNumber" required value="<c:out value='${requestScope.phoneNumber}'></c:out>">
     </div>
   </div>
-    <div class="form-group">
-      <label class="col-lg-3 control-label">Library</label>
-         <select class="col-lg-4" class="form-control default" name="library" id="library_select" onchange="library_changed();">
-          <option value="None">Select your Library</option>
-          <c:forEach items="${requestScope.libraries}" var="library">
-          	<option value="${library.libraryName}">${library.libraryName}</option>
-          </c:forEach>
-          
-        </select>
-  </div>
   <div class="form-group">
       <label class="col-lg-3 control-label">Faculty</label>
          <select class="col-lg-4" class="form-control default" name="faculty" id="faculty_select" onchange="faculty_changed();">

@@ -1,4 +1,4 @@
-package com.bam.helper;
+package com.bam.services;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

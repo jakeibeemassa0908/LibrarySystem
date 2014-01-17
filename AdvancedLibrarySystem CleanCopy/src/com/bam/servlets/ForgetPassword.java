@@ -1,8 +1,6 @@
 package com.bam.servlets;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,11 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.Students;
-import com.bam.helper.Defaults;
-import com.bam.helper.*;
+import com.bam.services.DBConnection;
 
 /**
  * Servlet implementation class ForgetPassword
@@ -38,8 +37,7 @@ public class ForgetPassword extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email=request.getParameter("email");
 		String error;
-		final String SUCCESSMESSAGE = "Click on this link to reset Your password. This link is valid for 2 hours only";;
-		String generatedToken=null;
+		String successMessage;
 		if (email.isEmpty()){
 			error="Please enter an email address";
 			RequestDispatcher rd= request.getRequestDispatcher("forget_password.jsp");
@@ -62,6 +60,7 @@ public class ForgetPassword extends HttpServlet {
 			}finally{
 				session.close();
 			}
+			
 			if (users.isEmpty()){
 				error="There is no such email registered in our site.";
 				RequestDispatcher rd = request.getRequestDispatcher("forget_password.jsp");
@@ -70,13 +69,9 @@ public class ForgetPassword extends HttpServlet {
 				return;
 			}
 			else{
-				Date expirationDate =HelperClass.getDateAhead(2);
-				generatedToken=HelperClass.generateRandomWord()+expirationDate.toString()+email;
-				generatedToken=HelperClass.toSHA1(generatedToken.getBytes());
-				String linkToResetPassowrd=Defaults.PATH+"reset_password?token="+generatedToken+"&email="+email;
+				successMessage= "An email has been sent to you with the instructions to reset/retrieve your password.";
 				RequestDispatcher rd = request.getRequestDispatcher("forget_password.jsp");
-				request.setAttribute("successMessage", SUCCESSMESSAGE);
-				request.setAttribute("linkToResetPassowrd", linkToResetPassowrd);
+				request.setAttribute("successMessage", successMessage);
 				rd.forward(request, response);
 				return;
 			}

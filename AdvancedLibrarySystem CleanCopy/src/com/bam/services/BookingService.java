@@ -4,16 +4,23 @@ import com.bam.dto.BookPieces;
 import com.bam.dto.Bookings;
 import com.bam.dto.Books;
 import com.bam.dto.Students;
+import com.bam.dto.Library;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import com.bam.helper.*;
 
 public class BookingService {
 	DBConnection connection = new DBConnection();
@@ -106,7 +113,7 @@ public class BookingService {
 	}
 	
 	public void delete(int id){
-		BookService abs = new BookService();
+		AddBookService abs = new AddBookService();
 		abs.returnBookPiece(id);
 		Session session= null;
 		try{

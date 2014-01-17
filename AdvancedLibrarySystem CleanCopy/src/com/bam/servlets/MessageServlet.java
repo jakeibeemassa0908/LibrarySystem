@@ -13,10 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import com.bam.dto.Library;
 import com.bam.dto.Messages;
 import com.bam.dto.Students;
-import com.bam.helper.*;
+import com.bam.services.HelperClass;
 import com.bam.services.MessageService;
+import com.bam.services.RegisterService;
 import com.bam.services.StudentService;
 
 @WebServlet("/message")
@@ -164,7 +173,8 @@ public class MessageServlet extends HttpServlet {
 	
 				}
 				//pass the parameters to the helper class for validation
-				error = HelperClass.validate(map);
+				HelperClass hc = new HelperClass();
+				error = hc.validate(map);
 				//if it comes back with no error, save it to the db, if it does tell the user
 				if (error.isEmpty()){
 					MessageService message = new MessageService();
