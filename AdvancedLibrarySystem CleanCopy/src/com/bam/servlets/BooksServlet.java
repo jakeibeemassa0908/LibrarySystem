@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bam.dto.Books;
-import com.bam.services.AddBookService;
+import com.bam.services.BookService;
 
 @WebServlet("/books")
 public class BooksServlet extends HttpServlet {
@@ -22,7 +22,7 @@ public class BooksServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "books");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
-		AddBookService abs = new AddBookService();
+		BookService abs = new BookService();
 		List<Books> books = abs.getbooks(null, null, null, null, null, null);
 		session.setAttribute("books", books);
 		dispatcher.forward(request, response);

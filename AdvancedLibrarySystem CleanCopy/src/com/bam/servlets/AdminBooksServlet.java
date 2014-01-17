@@ -11,14 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.Books;
-import com.bam.services.AddBookService;
+import com.bam.services.BookService;
 
 @WebServlet("/admin_books")
 public class AdminBooksServlet extends HttpServlet {
@@ -35,7 +30,7 @@ public class AdminBooksServlet extends HttpServlet {
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "admin_books");
-		AddBookService abs = new AddBookService();
+		BookService abs = new BookService();
 		List<Books> books=abs.getbooks(null, null, null, null, null, null);
 		if (!books.isEmpty()){	
 			session.setAttribute("books", books);

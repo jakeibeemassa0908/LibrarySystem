@@ -57,7 +57,9 @@
 				      <small>A link with will be sent to you email, follow it to retrieve your password</small>
 				</c:if>
 				<c:if test="${requestScope.successMessage !=null}">
-					<div class="alert alert-success"><c:out value="${requestScope.successMessage}"></c:out></div>
+					<div class="alert alert-success"><c:out value="${requestScope.successMessage}"></c:out></br></br>
+						<a href='<c:out value="${requestScope.linkToResetPassowrd}"></c:out>'><c:out value="${requestScope.linkToResetPassowrd}"></c:out></a>
+					</div>
 				</c:if>
 			</div>
 		</div>

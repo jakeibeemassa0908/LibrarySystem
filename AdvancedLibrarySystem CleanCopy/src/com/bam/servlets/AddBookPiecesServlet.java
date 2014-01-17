@@ -1,8 +1,7 @@
 package com.bam.servlets;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.bam.dto.Books;
-import com.bam.services.AddBookService;
+import com.bam.services.BookService;
 
 /**
  * Servlet implementation class AddBookPiecesServlet
@@ -20,7 +19,7 @@ import com.bam.services.AddBookService;
 public class AddBookPiecesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AddBookService abs= new AddBookService();
+		BookService abs= new BookService();
 		try{
 			String bookId= request.getParameter("id");
 			int bookIdInt=Integer.parseInt(bookId);

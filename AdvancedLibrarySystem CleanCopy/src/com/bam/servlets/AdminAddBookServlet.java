@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.bam.services.AddBookService;
-import com.bam.services.HelperClass;
-import com.bam.services.RegisterService;
+import com.bam.services.BookService;
+import com.bam.helper.*;
 
 @WebServlet("/add_book")
 public class AdminAddBookServlet extends HttpServlet {
@@ -34,10 +33,9 @@ public class AdminAddBookServlet extends HttpServlet {
 		for(Map.Entry<String, String[]> entry : map.entrySet()){
 			request.setAttribute(entry.getKey(),entry.getValue()[0]);
 		}
-		HelperClass hc = new HelperClass();
-		error = hc.validate(map);
+		error = HelperClass.validate(map);
 				if (error.isEmpty()){
-					AddBookService bookService = new AddBookService();
+					BookService bookService = new BookService();
 					if(bookService.checkAvailableBook(map))
 					{
 						try {
