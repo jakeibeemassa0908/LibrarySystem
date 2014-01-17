@@ -1,6 +1,5 @@
 package com.bam.services;
 
-import com.bam.dto.Students;
 import com.bam.dto.Library;
 
 import java.util.List;
@@ -9,11 +8,11 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-public class LibraryRegisterService {
+import com.bam.helper.*;
+
+public class LibraryService {
 	HelperClass hc = new HelperClass();
 	DBConnection connection = new DBConnection();
 	public boolean checkAvailableUser(String email){
@@ -47,7 +46,7 @@ public class LibraryRegisterService {
 			lib.setLibraryEmail(map.get("libraryEmail")[0]);
 			lib.setLibraryName(map.get("libraryName")[0]);
 			lib.setLibraryPhoneNumber(Long.parseLong(map.get("libraryPhoneNumber")[0]));
-			String passwordEncrypted= hc.toSHA1(map.get("libraryPassword")[0].getBytes());
+			String passwordEncrypted= HelperClass.toSHA1(map.get("libraryPassword")[0].getBytes());
 			lib.setLibraryPassword(passwordEncrypted);
 			session.save(lib);
 			session.getTransaction().commit();
@@ -60,5 +59,22 @@ public class LibraryRegisterService {
 		}finally{
 			session.close();
 		}
+	}
+	
+	public List<Library> getLibraries(){
+		Session session = null;
+		List<Library> libraries = null;
+		try{
+			session = connection.getSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Library.class);
+			libraries = criteria.list();
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return libraries;
 	}
 }

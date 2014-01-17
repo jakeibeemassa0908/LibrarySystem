@@ -13,8 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import com.bam.dto.Books;
 import com.bam.dto.Students;
-import com.bam.services.AddBookService;
-import com.bam.services.HelperClass;
+import com.bam.services.BookService;
+import com.bam.helper.*;
 import com.bam.services.StudentService;
 
 /**
@@ -29,9 +29,8 @@ public class SearchServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		RequestDispatcher rd = request.getRequestDispatcher("search_result.jsp");
 		String query=(String) request.getParameter("search_query");
-		HelperClass hc = new HelperClass();
-		query=hc.escapeHtml(query);
-		AddBookService abs = new AddBookService();
+		query=HelperClass.escapeHtml(query);
+		BookService abs = new BookService();
 		List<Books> books=abs.searchBooks(query,null);
 		
 		if(session.getAttribute("admin")!=null){

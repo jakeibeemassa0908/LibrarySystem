@@ -3,10 +3,13 @@ package com.bam.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import com.bam.dto.Library;
+import com.bam.services.LibraryService;
 import com.bam.services.RegisterService;
-import com.bam.services.HelperClass;
+import com.bam.helper.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -22,8 +25,11 @@ public class RegisterServlet extends HttpServlet {
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+		LibraryService ls = new LibraryService();
+		List<Library> libraries = ls.getLibraries();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
 		HttpSession session= request.getSession();
+		request.setAttribute("libraries", libraries);
 		session.setAttribute("active_tab", "register");
 		dispatcher.forward(request, response);
 		return;
@@ -36,9 +42,8 @@ public class RegisterServlet extends HttpServlet {
 		for(Map.Entry<String, String[]> entry : map.entrySet()){
 			request.setAttribute(entry.getKey(),entry.getValue()[0]);
 		}
-		HelperClass hc = new HelperClass();
-		error = hc.validate(map);
-		boolean isMatch=(hc.matchPasswords(map.get("password")[0], map.get("re-password")[0]));
+		error = HelperClass.validate(map);
+		boolean isMatch=(HelperClass.matchPasswords(map.get("password")[0], map.get("re-password")[0]));
 		if (isMatch==false){
 			error.add("Passwords didn't match");
 		}
@@ -47,7 +52,7 @@ public class RegisterServlet extends HttpServlet {
 			if(rs.checkAvailableUser(request.getParameter("email"))){
 				String[]encrypted=new String[1];
 				try{
-					encrypted[0]=hc.toSHA1(map.get("password")[0].getBytes());
+					encrypted[0]=HelperClass.toSHA1(map.get("password")[0].getBytes());
 				}
 				catch (ArrayIndexOutOfBoundsException e){
 					e.printStackTrace();

@@ -9,12 +9,11 @@ import java.util.Map;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
+import com.bam.helper.*;
+
 public class RegisterService {
-	HelperClass hc = new HelperClass();
 	DBConnection connection = new DBConnection();
 	public boolean checkAvailableUser(String email){
 		List<Students> users=null;
@@ -51,9 +50,10 @@ public class RegisterService {
 			st.setGender(map.get("gender")[0]);
 			st.setEmail(map.get("email")[0]);
 			st.setRegisterDate(new Date());
+			st.setLibrary(map.get("library")[0]);
 			byte[] pic={};
 			st.setProfile_picture(pic);
-			String passwordEncrypted= hc.toSHA1(map.get("password")[0].getBytes());
+			String passwordEncrypted= HelperClass.toSHA1(map.get("password")[0].getBytes());
 			st.setPassword(passwordEncrypted);
 			session.save(st);
 			session.getTransaction().commit();
