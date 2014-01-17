@@ -14,7 +14,7 @@ import com.bam.helper.*;
 
 public class StudentService {
 	DBConnection connection = new DBConnection();
-	public List getStudent(Integer id){
+	public List<Students> getStudent(Integer id){
 		List<Students> students=null;
 		Session session1=null;
 		try {

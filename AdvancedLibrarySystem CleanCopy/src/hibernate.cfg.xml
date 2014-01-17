@@ -67,7 +67,7 @@
         <mapping class="com.bam.dto.BookPieces"/>
         <mapping class="com.bam.dto.Comments"/>
         <mapping class="com.bam.dto.Bookings"/>
-        
+        <mapping class="com.bam.dto.PasswordChange"/>
         
 
     </session-factory>

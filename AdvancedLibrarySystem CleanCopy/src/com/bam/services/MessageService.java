@@ -36,7 +36,6 @@ public class MessageService {
 			session.save(msg);
 			session.getTransaction().commit();
 		} catch (HibernateException e) {
-			System.out.println(e);
 			e.printStackTrace();
 		}finally{
 			session.close();
