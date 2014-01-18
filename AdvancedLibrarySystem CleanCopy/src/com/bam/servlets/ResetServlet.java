@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bam.dto.PasswordChange;
 import com.bam.services.PasswordService;
+import com.bam.services.StudentService;
 
 /**
  * Servlet implementation class ResetServlet
@@ -26,13 +27,16 @@ public class ResetServlet extends HttpServlet {
 		String email = (String) request.getParameter("email");
 		PasswordService ps = new PasswordService();
 		HttpSession session= request.getSession();
+		int id;
+		StudentService sc = new StudentService();
 		final String ERROR="This Link is no Longer valid please generate new token to change password";
 		if(ps.isTokenValidAndMatch(token, email)){
 			PasswordChange pc = ps.getToken(token);
 			if(pc.getTokenExpirationTime().before(new Date())){
 				request.setAttribute("error", ERROR);
-				session.setAttribute("token", token);
 			}
+			id=sc.getStudentIdFrom(email);
+			session.setAttribute("studentToChangeId", id);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("reset_password.jsp");
 			dispatcher.forward(request, response);
 			return;
@@ -46,9 +50,18 @@ public class ResetServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		String token = (String)session.getAttribute("token");
-		String password = request.getParameter("password");
-		String rePassword= request.getParameter("re_password");
+		try{
+			String password = request.getParameter("password");
+			String rePassword= request.getParameter("re_password");
+			PasswordService ps = new PasswordService();
+			int studentId =(int)session.getAttribute("studentToChangeId");
+			ps.changePassword(studentId, password);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		String path=request.getContextPath();
+		response.sendRedirect(path+"/login");
+		return;
 	}
 
 }

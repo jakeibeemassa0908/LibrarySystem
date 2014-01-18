@@ -26,6 +26,7 @@ public class Students {
 	private String department;
 	private String program;
 	private String password;
+	private String password_salt;
 	private String email;
 	private long phoneNumber;
 	private String gender;
@@ -127,6 +128,12 @@ public class Students {
 	}
 	public void setLibrary(String library) {
 		this.library = library;
+	}
+	public String getPassword_salt() {
+		return password_salt;
+	}
+	public void setPassword_salt(String password_salt) {
+		this.password_salt = password_salt;
 	}
 	
 	

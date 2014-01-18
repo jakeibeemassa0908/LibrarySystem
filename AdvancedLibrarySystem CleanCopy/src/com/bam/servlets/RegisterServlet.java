@@ -50,13 +50,6 @@ public class RegisterServlet extends HttpServlet {
 		if (error.isEmpty()){
 			RegisterService rs = new RegisterService();
 			if(rs.checkAvailableUser(request.getParameter("email"))){
-				String[]encrypted=new String[1];
-				try{
-					encrypted[0]=HelperClass.toSHA1(map.get("password")[0].getBytes());
-				}
-				catch (ArrayIndexOutOfBoundsException e){
-					e.printStackTrace();
-				}
 				rs.saveData(map);
 				response.sendRedirect("login");
 				return;

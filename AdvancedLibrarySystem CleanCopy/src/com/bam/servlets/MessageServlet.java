@@ -147,7 +147,7 @@ public class MessageServlet extends HttpServlet {
 				String toString="";
 				HttpSession session = request.getSession();
 				Students std= new Students();
-				
+				StudentService sc = new StudentService();
 				if(session.getAttribute("user")!=null){
 					std= (Students) session.getAttribute("user");
 					from= std.getStudentId();
@@ -158,8 +158,10 @@ public class MessageServlet extends HttpServlet {
 				else if (session.getAttribute("admin")!=null){
 					from =ADMIN_CODE;
 					fromString="Admin";
-					std=(Students) session.getAttribute("to");
-					to=std.getStudentId();
+					String email=map.get("message_to")[0];
+					to=sc.getStudentIdFrom(email);
+					std=(Students) sc.getStudent(to).get(0);
+						to=std.getStudentId();
 					toString=std.getFirstName() +" "+ std.getlName()+" ("+ std.getEmail()+")";
 	
 				}

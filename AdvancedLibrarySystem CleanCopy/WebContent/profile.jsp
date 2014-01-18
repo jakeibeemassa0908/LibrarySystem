@@ -56,8 +56,8 @@
  				<a type="button" class="btn btn-primary btn-block" href="<c:url value='/edit_profile?id=${sessionScope.student.studentId}'/>">Edit Profile</a>
  			</c:if>
  			<c:if test="${sessionScope.admin!=null}">
- 				<a type="button" class="btn btn-primary btn-block" href="<c:url value='/message_compose?to=${sessionScope.student.studentId}'/>">Send Message</a>
- 				
+ 				<a type="button" class="btn btn-primary btn-block" href="<c:url value='/message_compose?to=${sessionScope.student.studentId}'/>">Send Message</a><br>
+ 				<a type="button" class="btn btn-danger btn-block" href="#">Delete account</a>
  			</c:if>
  		</div>
  		<div class="col-lg-7  book_detail_image">

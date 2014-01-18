@@ -19,6 +19,7 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.dto.Library;
 import com.bam.dto.Students;
 import com.bam.helper.*;
+import com.bam.services.PasswordService;
 
 /**
  * Servlet implementation class LoginServlet
@@ -39,6 +40,7 @@ public class LoginServlet extends HttpServlet {
 			DBConnection connection = new DBConnection();
 			String email= (String)request.getParameter("email");
 			String password=(String) request.getParameter("password");
+			PasswordService ps = new PasswordService();
 			if(email.isEmpty() || password.isEmpty()){
 				String errorString = "User Name or Password cannot be left blank";
 				RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");
@@ -53,21 +55,27 @@ public class LoginServlet extends HttpServlet {
 				try {
 					session = connection.getSession();
 					session.beginTransaction();
-					Criteria criteria =session.createCriteria(Students.class)
-							.add(Restrictions.like("email", email))
-							.add(Restrictions.like("password",HelperClass.toSHA1(password.getBytes())));
-					Criteria criteria2 = session.createCriteria(Library.class)
-							.add(Restrictions.like("libraryUserName", email))
-							.add(Restrictions.like("libraryPassword",HelperClass.toSHA1(password.getBytes())));
-					users=criteria.list();
-					admin= criteria2.list();
+					if(HelperClass.validateEmail(email)){
+						Criteria criteria =session.createCriteria(Students.class)
+								.add(Restrictions.like("email", email))
+								.add(Restrictions.like("password",HelperClass.generateSaltedEncrypted(password, ps.getPasswordSalt(email))));
+						users=criteria.list();
+						if(users.isEmpty())users=null;
+					}else{
+						
+						Criteria criteria2 = session.createCriteria(Library.class)
+								.add(Restrictions.like("libraryUserName", email))
+								.add(Restrictions.like("libraryPassword",HelperClass.toSHA1(password.getBytes())));
+						admin= criteria2.list();
+						if(admin.isEmpty())admin=null;
+					}
 					session.getTransaction().commit();
 				} catch (HibernateException e) {
 					e.printStackTrace();
 				}finally{
 					session.close();
 				}
-					if(users.isEmpty() && admin.isEmpty()){
+					if(users==null && admin==null){
 						String errorString = "User Name or Password is incorect";
 						RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");
 						request.setAttribute("error", errorString);
@@ -76,12 +84,12 @@ public class LoginServlet extends HttpServlet {
 					}
 					else{
 						HttpSession httpSession = request.getSession();
-						if(users.size()!=0){
+						if(users!=null){
 							httpSession.setAttribute("user", users.get(0));
 							response.sendRedirect("");
 							return;
 						}
-						else if (admin.size()!=0){
+						else if (admin!=null){
 							httpSession.setAttribute("admin", admin.get(0));
 							response.sendRedirect("admin_home");
 							return;

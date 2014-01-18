@@ -84,7 +84,7 @@
 
   <script type="text/javascript">
 	$("#form_reset_pass").on("submit",function(){
-		alert("hello");
+		//alert("hello");
 	});
   </script>
   </body>

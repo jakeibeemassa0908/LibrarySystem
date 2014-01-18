@@ -6,9 +6,11 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.bam.dto.PasswordChange;
+import com.bam.dto.Students;
 import com.bam.helper.*;
 
 public class PasswordService {
@@ -74,5 +76,46 @@ public class PasswordService {
 			session.close();
 		}
 		return tokenToReturn;
+	}
+	
+	public void changePassword(int userId, String password){
+		Session session = null;
+		Students student=null;
+		String salt=null;
+		try{
+			session = connection.getSession();
+			session.beginTransaction();
+			student = (Students) session.load(Students.class, userId);
+			salt= HelperClass.generateRandomWord();
+			String passwordEncrypted=HelperClass.generateSaltedEncrypted(password, salt);
+			student.setPassword_salt(salt);
+			student.setPassword(passwordEncrypted);
+			session.update(student);
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+	}
+	
+	public String getPasswordSalt(String email){
+		Session session = null;
+		String salt=null;
+		try{
+			session=connection.getSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Students.class)
+					.add(Restrictions.like("email", email))
+					.setProjection(Projections.projectionList()
+					.add(Projections.property("password_salt"),"password_salt"));
+			salt=(String) criteria.list().get(0);
+			session.getTransaction().commit();
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return salt;
 	}
 }

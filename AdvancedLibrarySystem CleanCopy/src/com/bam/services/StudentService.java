@@ -8,6 +8,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 import com.bam.dto.Students;
 import com.bam.helper.*;
@@ -117,5 +118,25 @@ public class StudentService {
 		List<Students> students = getStudent(student_id);
 		Students student=students.get(0);
 		return student.getProfile_picture();
+	}
+	
+	public int getStudentIdFrom(String email){
+		Session session = null;
+		int id=-1;
+		try{
+			session = connection.getSession();
+			session.beginTransaction();
+			Criteria criteria = session.createCriteria(Students.class)
+					.add(Restrictions.like("email", email))
+					.setProjection(Projections.projectionList()
+					.add(Projections.property("StudentId"),"StudentId"));
+			id=(Integer)criteria.list().get(0);
+			session.getTransaction().commit();
+		}catch(HibernateException e ){
+			e.printStackTrace();
+		}finally{
+			session.close();
+		}
+		return id;
 	}
 }
