@@ -31,7 +31,7 @@ public class ProfileServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("profile.jsp");
 				HttpSession session =request.getSession();	
-				StudentService sc= new StudentService();
+				StudentService sc= StudentService.getInstance();
 				Students student=null;
 				int id=0;
 				try {
@@ -52,10 +52,12 @@ public class ProfileServlet extends HttpServlet {
 								return;
 							}
 						}
-						BookingService bs= new BookingService();
+						BookingService bs=BookingService.getInstance();
 						List<Bookings> bookings=bs.getBookings(student, null);
 						if(!bookings.isEmpty()){
 							session.setAttribute("bookings", bookings);
+						}else{
+							session.setAttribute("bookings", null);
 						}
 					session.setAttribute("active_tab", "profile");
 					session.setAttribute("now", new Date());

@@ -27,7 +27,7 @@ public class DeleteServlet extends HttpServlet {
 		if(request.getParameter("bookId")!=null){
 			if(session.getAttribute("admin")!=null){
 				int bookId=Integer.parseInt(request.getParameter("bookId"));
-				BookService abs = new BookService();
+				BookService abs = BookService.getInstance();
 				Books book=abs.getbooks(bookId, null, null, null, null, null).get(0);
 				abs.deleteBook(book);
 				response.sendRedirect("admin_books");
@@ -38,7 +38,7 @@ public class DeleteServlet extends HttpServlet {
 				return;
 			}
 		}else if(request.getParameter("commentId")!=null){
-			ReviewService rs = new ReviewService();
+			ReviewService rs = ReviewService.getInstance();
 			int bookId=0;
 			int id=Integer.parseInt(request.getParameter("commentId"));
 			try {

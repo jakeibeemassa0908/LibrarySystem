@@ -36,8 +36,8 @@ public class BookingServlet extends HttpServlet {
 		if (error!=null){
 			request.setAttribute("error", "You have already reached the Limit of 4 Books");
 		}
-		BookingService bs= new BookingService();
-		BookService abs = new BookService();
+		BookingService bs= BookingService.getInstance();
+		BookService abs = BookService.getInstance();
 		if(session.getAttribute("user")!=null){
 			if(request.getParameter("cancel")!=null){
 				int Id=Integer.parseInt(request.getParameter("cancel"));
@@ -75,8 +75,8 @@ public class BookingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session= request.getSession();
 		Students student= (Students)session.getAttribute("user");
-		BookingService bs = new BookingService();
-		BookService abs = new BookService();
+		BookingService bs =BookingService.getInstance();
+		BookService abs = BookService.getInstance();
 		boolean userCanBook=bs.checkUserCanBook(student);
 		if(!userCanBook){
 			String error="limit";

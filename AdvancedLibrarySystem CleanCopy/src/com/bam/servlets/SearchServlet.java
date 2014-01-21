@@ -30,11 +30,11 @@ public class SearchServlet extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("search_result.jsp");
 		String query=(String) request.getParameter("search_query");
 		query=HelperClass.escapeHtml(query);
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		List<Books> books=abs.searchBooks(query,null);
 		
 		if(session.getAttribute("admin")!=null){
-			StudentService sc= new StudentService();
+			StudentService sc= StudentService.getInstance();
 			List<Students> students=sc.searchStudent(query);
 			if(!students.isEmpty()){
 				request.setAttribute("students", students);

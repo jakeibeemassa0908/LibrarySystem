@@ -5,7 +5,17 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class DBConnection {
-
+	private  static DBConnection connection = null;
+	
+	private DBConnection(){}
+	
+	public  static DBConnection getInstance(){
+		if(connection==null){
+			connection = new DBConnection();
+		}
+		return connection;
+	}
+	
     private static SessionFactory factory;
     static {
           factory = new Configuration().configure().buildSessionFactory();

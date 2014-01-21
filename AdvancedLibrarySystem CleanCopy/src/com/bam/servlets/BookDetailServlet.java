@@ -36,14 +36,14 @@ public class BookDetailServlet extends HttpServlet {
 		}
 		HttpSession session =request.getSession();
 		session.setAttribute("active_tab", "books");
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		List<Books> book= abs.getbooks(id, null, null, null, null, null);
 		if (book.isEmpty()){
 			String path=request.getContextPath();
 			response.sendRedirect(path+"/error");
 		}
 		else{
-			ReviewService rs = new ReviewService();
+			ReviewService rs = ReviewService.getInstance();
 			List <Comments>reviews= rs.getReview(null, book.get(0),null,3);
 			List<Books> suggestions=abs.searchBooks(book.get(0).getCategory(), 4);
 			if(!suggestions.isEmpty())
@@ -74,10 +74,10 @@ public class BookDetailServlet extends HttpServlet {
 				int idInt=Integer.parseInt(id);
 				ArrayList<String>error = HelperClass.validate(map);
 				if (error.isEmpty()){
-					BookService abs = new BookService();
+					BookService abs = BookService.getInstance();
 					Books book=abs.getbooks(idInt, null, null, null, null, null).get(0);
 					Students student= (Students) session.getAttribute("user");
-					ReviewService rs= new ReviewService();
+					ReviewService rs= ReviewService.getInstance();
 					rs.saveReview(map, book, student);
 					response.sendRedirect("book_detail/"+id);
 					return;

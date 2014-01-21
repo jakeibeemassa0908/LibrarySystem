@@ -35,7 +35,7 @@ public class AdminAddBookServlet extends HttpServlet {
 		}
 		error = HelperClass.validate(map);
 				if (error.isEmpty()){
-					BookService bookService = new BookService();
+					BookService bookService = BookService.getInstance();
 					if(bookService.checkAvailableBook(map))
 					{
 						try {

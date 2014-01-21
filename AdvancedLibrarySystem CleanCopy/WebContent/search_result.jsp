@@ -32,6 +32,9 @@
 	</div><br>
 	<div class="container">
 	 	<div class="row book-row">
+	 	<c:if test="${sessionScope.admin!=null }">
+	 		<center>Books</center>
+	 	</c:if>
 	 		<c:forEach items="${requestScope.books}" var="book" varStatus="status"> 
 		 		<a href="book_detail/${book.bookId}"><div class="col-lg-2 book well">
 		 			<div class="book-img">
@@ -46,13 +49,17 @@
 		 				<center><b>${book.title}<br>
 		 				by ${book.author}</b></center>
 		 			</div>
-		 			<c:if test="${status.index==4}"></div></a><div class="row book-row"></c:if>
+		 			<c:if test="${status.index==4}"></div>
+		 		</a>
+		 		<div class="row book-row">
+		 </c:if>
 		 		</div>
 	 		</c:forEach>
 	 	</div>
 	 </div>
 	 <c:if test="${sessionScope.admin!=null }">
 		 <div class="container">
+		 	<center>Books</center>
 		 	<div class="row book-row">
 		 		<c:forEach items="${requestScope.students}" var="student" varStatus="status"> 
 			 		<a href="profile/${student.studentId}"><div class="col-lg-2 book well">

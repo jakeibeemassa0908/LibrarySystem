@@ -52,7 +52,7 @@
             <div class="carousel-caption">
               <h1>Knowledge is everywhere around you</h1>
               <p>.</p>
-              <p><a class="btn btn-large btn-primary" href="#">Sign up today</a></p>
+              <p><a class="btn btn-large btn-primary" href="register">Sign up today</a></p>
             </div>
           </div>
         </div>

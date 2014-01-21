@@ -22,7 +22,7 @@ public class V1_books {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response returnBooks() throws Exception{
 		
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		ToJSON toJson = new ToJSON();
 		Response rb = null;
 		String returnString=null;

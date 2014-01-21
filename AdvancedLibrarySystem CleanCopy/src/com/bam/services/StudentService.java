@@ -14,7 +14,20 @@ import com.bam.dto.Students;
 import com.bam.helper.*;
 
 public class StudentService {
-	DBConnection connection = new DBConnection();
+	
+	private static StudentService studentService = null;
+	
+	private StudentService(){}
+	
+	public static StudentService getInstance(){
+		if (studentService== null){
+			studentService = new StudentService();
+		}
+		return studentService;
+	}
+	
+	
+	DBConnection connection = DBConnection.getInstance();
 	public List<Students> getStudent(Integer id){
 		List<Students> students=null;
 		Session session1=null;

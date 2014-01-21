@@ -19,8 +19,19 @@ import org.hibernate.criterion.Restrictions;
 
 import com.bam.helper.*;
 public class BookService {
+	
+	private static BookService bookService= null;
+	
+	private BookService(){}
+	
+	public static BookService  getInstance(){
+		if (bookService== null){
+			bookService= new BookService();
+		}
+		return bookService;
+	}
 	HelperClass hc = new HelperClass();
-	DBConnection connection = new DBConnection();
+	DBConnection connection = DBConnection.getInstance();
 
 	public boolean checkAvailableBook(Map<String, String[]> map){
 		List<Books> book=null;
@@ -281,9 +292,9 @@ public class BookService {
 		Books bookToDelete=null;
 		try{
 		deleteBookPieces(book);
-		BookingService bs= new BookingService();
+		BookingService bs= BookingService.getInstance();
 		bs.deleteBookings(book);
-		ReviewService rs= new ReviewService();
+		ReviewService rs= ReviewService.getInstance();
 		rs.deleteReviews(book);
 		session=connection.getSession();
 		session.beginTransaction();

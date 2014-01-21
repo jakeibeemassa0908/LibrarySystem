@@ -14,7 +14,17 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.helper.*;
 
 public class RegisterService {
-	DBConnection connection = new DBConnection();
+	private static  RegisterService registerService = null;
+	
+	private RegisterService(){}
+	
+	public static RegisterService getInstance(){
+		if (registerService == null){
+			registerService = new RegisterService();
+		}
+		return registerService;
+	}
+	DBConnection connection = DBConnection.getInstance();
 	public boolean checkAvailableUser(String email){
 		List<Students> users=null;
 		Session session=null;

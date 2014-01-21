@@ -13,8 +13,19 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.helper.*;
 
 public class LibraryService {
+	
+	private static LibraryService libraryService= null;
+	
+	private LibraryService(){}
+	
+	public  static LibraryService getInstance(){
+		if(libraryService == null){
+			libraryService= new LibraryService();
+		}
+		return libraryService;
+	}
 	HelperClass hc = new HelperClass();
-	DBConnection connection = new DBConnection();
+	DBConnection connection = DBConnection.getInstance();
 	public boolean checkAvailableUser(String email){
 		List<Library> users=null;
 		Session session=null;

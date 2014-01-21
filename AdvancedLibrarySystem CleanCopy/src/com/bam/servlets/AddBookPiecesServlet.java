@@ -19,7 +19,7 @@ import com.bam.services.BookService;
 public class AddBookPiecesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BookService abs= new BookService();
+		BookService abs= BookService.getInstance();
 		try{
 			String bookId= request.getParameter("id");
 			int bookIdInt=Integer.parseInt(bookId);

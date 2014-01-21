@@ -40,7 +40,7 @@ public class ForgetPassword extends HttpServlet {
 		String error;
 		final String SUCCESSMESSAGE = "Click on this link to reset Your password. This link is valid for 2 hours only";;
 		String generatedToken=null;
-		PasswordService ps = new PasswordService();
+		PasswordService ps = PasswordService.getInstance();
 		if (email.isEmpty()){
 			error="Please enter an email address";
 			RequestDispatcher rd= request.getRequestDispatcher("forget_password.jsp");
@@ -52,7 +52,7 @@ public class ForgetPassword extends HttpServlet {
 			List<Students>  users=null;
 			Session session = null;
 			try{
-				DBConnection connection = new DBConnection();
+				DBConnection connection =DBConnection.getInstance();
 				session=connection.getSession();
 				session.beginTransaction();
 				Criteria criteria =session.createCriteria(Students.class);

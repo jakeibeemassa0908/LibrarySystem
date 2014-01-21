@@ -14,8 +14,18 @@ import com.bam.dto.Students;
 import com.bam.helper.*;
 
 public class PasswordService {
-	DBConnection connection = new DBConnection();
-	StudentService sc = new StudentService();
+	private static  PasswordService passwordService = null;
+	
+	private PasswordService(){}
+	
+	public static PasswordService getInstance(){
+		if (passwordService == null){
+			passwordService = new PasswordService();
+		}
+		return passwordService;
+	}
+	DBConnection connection = DBConnection.getInstance();
+	StudentService sc = StudentService.getInstance();
 	
 	public void saveToken(String token,Date expireDate,int idNumber){
 		Session session = null;

@@ -19,7 +19,7 @@ public class ImageProviderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StudentService sc = new StudentService();
+		StudentService sc =StudentService.getInstance();
 		int student_id=Integer.parseInt(request.getParameter("id"));
 		byte[] image= sc.getImage(student_id);
 		response.setContentType("image/jpeg");

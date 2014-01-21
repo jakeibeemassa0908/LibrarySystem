@@ -16,7 +16,17 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.helper.*;
 
 public class ReviewService {
-	DBConnection connection = new DBConnection();
+	private static  ReviewService reviewService = null;
+	
+	private ReviewService(){}
+	
+	public static ReviewService getInstance(){
+		if (reviewService == null){
+			reviewService = new ReviewService();
+		}
+		return reviewService;
+	}
+	DBConnection connection = DBConnection.getInstance();
 	
 	public List<Comments> getReview(Integer id, Books book, Students student, Integer number){
 		Session session1=null;

@@ -23,7 +23,7 @@ public class MessageDetailsServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("message_details.jsp");
 		HttpSession session = request.getSession();
-		MessageService ms = new MessageService();
+		MessageService ms = MessageService.getInstance();
 		int whoOpen;
 		List<Messages> messages=null;
 		Integer from, to, ID;

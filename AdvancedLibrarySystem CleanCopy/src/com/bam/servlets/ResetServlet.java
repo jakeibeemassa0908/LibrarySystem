@@ -25,10 +25,10 @@ public class ResetServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String token = (String) request.getParameter("token");
 		String email = (String) request.getParameter("email");
-		PasswordService ps = new PasswordService();
+		PasswordService ps = PasswordService.getInstance();
 		HttpSession session= request.getSession();
 		int id;
-		StudentService sc = new StudentService();
+		StudentService sc = StudentService.getInstance();
 		final String ERROR="This Link is no Longer valid please generate new token to change password";
 		if(ps.isTokenValidAndMatch(token, email)){
 			PasswordChange pc = ps.getToken(token);
@@ -53,7 +53,7 @@ public class ResetServlet extends HttpServlet {
 		try{
 			String password = request.getParameter("password");
 			String rePassword= request.getParameter("re_password");
-			PasswordService ps = new PasswordService();
+			PasswordService ps = PasswordService.getInstance();
 			int studentId =(int)session.getAttribute("studentToChangeId");
 			ps.changePassword(studentId, password);
 		}catch(Exception e){

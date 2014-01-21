@@ -13,10 +13,21 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
 import com.bam.helper.*;
 
 public class BookingService {
-	DBConnection connection = new DBConnection();
+	private static BookingService bookingService=null;
+	
+	private BookingService(){}
+	
+	public static BookingService getInstance(){
+		if(bookingService==null){
+			bookingService = new BookingService();
+		}
+		return bookingService;
+	}
+	DBConnection connection = DBConnection.getInstance();
 	public List<Bookings> getBookings(Students std,Books book){
 		Session session1= null;
 		List<Bookings> bookings=null;
@@ -106,7 +117,7 @@ public class BookingService {
 	}
 	
 	public void delete(int id){
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		abs.returnBookPiece(id);
 		Session session= null;
 		try{

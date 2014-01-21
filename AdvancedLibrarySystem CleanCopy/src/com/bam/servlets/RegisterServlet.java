@@ -25,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		LibraryService ls = new LibraryService();
+		LibraryService ls = LibraryService.getInstance();
 		List<Library> libraries = ls.getLibraries();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("register.jsp");
 		HttpSession session= request.getSession();
@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
 			error.add("Passwords didn't match");
 		}
 		if (error.isEmpty()){
-			RegisterService rs = new RegisterService();
+			RegisterService rs = RegisterService.getInstance();
 			if(rs.checkAvailableUser(request.getParameter("email"))){
 				rs.saveData(map);
 				response.sendRedirect("login");

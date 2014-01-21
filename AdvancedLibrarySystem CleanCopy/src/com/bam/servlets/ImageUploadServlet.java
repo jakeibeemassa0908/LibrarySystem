@@ -33,7 +33,7 @@ public class ImageUploadServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StudentService sc = new StudentService();
+		StudentService sc =StudentService.getInstance();
 		HttpSession session = request.getSession();
 		Students student = (Students)session.getAttribute("user");
 		int student_id=student.getStudentId();

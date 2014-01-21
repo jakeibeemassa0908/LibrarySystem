@@ -48,7 +48,7 @@ public class EditProfileServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Students student= (Students) session.getAttribute("user");
 		try{
-			StudentService sc = new StudentService();
+			StudentService sc = StudentService.getInstance();
 			map=request.getParameterMap();
 			sc.edit(map,student.getStudentId());
 			student=(Students) sc.getStudent(student.getStudentId()).get(0);

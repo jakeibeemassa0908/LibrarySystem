@@ -42,7 +42,7 @@ public class LibraryRegisterServlet extends HttpServlet {
 			error.add("Passwords didn't match");	
 		}
 		if (error.isEmpty()){
-			LibraryService rs = new LibraryService();
+			LibraryService rs = LibraryService.getInstance();
 			if(rs.checkAvailableUser(request.getParameter("libraryEmail")))
 			{
 				String[]encrypted=new String[1];

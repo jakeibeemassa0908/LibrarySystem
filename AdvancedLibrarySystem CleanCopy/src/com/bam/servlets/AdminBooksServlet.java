@@ -30,7 +30,7 @@ public class AdminBooksServlet extends HttpServlet {
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "admin_books");
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		List<Books> books=abs.getbooks(null, null, null, null, null, null);
 		if (!books.isEmpty()){	
 			session.setAttribute("books", books);

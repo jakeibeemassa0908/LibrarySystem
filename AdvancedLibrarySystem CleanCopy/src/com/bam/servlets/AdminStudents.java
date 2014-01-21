@@ -36,7 +36,7 @@ public class AdminStudents extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "admin_students");
 		List<Students> students;
-		StudentService sc = new StudentService();
+		StudentService sc = StudentService.getInstance();
 		students=sc.getStudent(null);
 		if (!students.isEmpty()){
 			session.setAttribute("students",students);

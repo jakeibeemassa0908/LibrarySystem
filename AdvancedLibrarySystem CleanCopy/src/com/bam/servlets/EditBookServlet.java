@@ -25,7 +25,7 @@ public class EditBookServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		int bookId=0;
 		Books book=null;
-		BookService bs= new BookService();
+		BookService bs= BookService.getInstance();
 		if(session.getAttribute("admin")==null){
 			response.sendRedirect("error");
 			return;
@@ -50,7 +50,7 @@ public class EditBookServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map<String,String[]> map = request.getParameterMap();
 		int bookId=Integer.parseInt(request.getParameter("id"));
-		BookService abs= new BookService();
+		BookService abs= BookService.getInstance();
 		abs.editBook(map, bookId);
 		response.sendRedirect("book_detail/"+bookId);
 		return;

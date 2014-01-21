@@ -37,10 +37,10 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			DBConnection connection = new DBConnection();
+			DBConnection connection = DBConnection.getInstance();
 			String email= (String)request.getParameter("email");
 			String password=(String) request.getParameter("password");
-			PasswordService ps = new PasswordService();
+			PasswordService ps = PasswordService.getInstance();
 			if(email.isEmpty() || password.isEmpty()){
 				String errorString = "User Name or Password cannot be left blank";
 				RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");

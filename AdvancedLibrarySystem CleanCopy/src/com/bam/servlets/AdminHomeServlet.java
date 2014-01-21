@@ -18,8 +18,8 @@ public class AdminHomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		StudentService sc = new StudentService();
-		BookService abs = new BookService();
+		StudentService sc = StudentService.getInstance();
+		BookService abs = BookService.getInstance();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("home_admin.jsp");
 		HttpSession session =request.getSession();
 		session.setAttribute("active_tab", "admin_home");

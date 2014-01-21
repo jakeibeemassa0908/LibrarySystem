@@ -34,7 +34,7 @@ public class HomeServlet extends HttpServlet {
 			if(session.getAttribute("user")!=null){
 				dispatcher = request.getRequestDispatcher("home.jsp");
 				List<Bookings>bookingsToLoad=new ArrayList<Bookings>();
-				BookingService bs = new BookingService();
+				BookingService bs = BookingService.getInstance();
 				List<Bookings>bookings=bs.getBookings((Students)session.getAttribute("user"), null);
 				for(int i=0;i<bookings.size();i++){
 					if(bookings.get(i).isReturned()==false){

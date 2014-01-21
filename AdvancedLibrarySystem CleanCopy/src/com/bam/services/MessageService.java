@@ -17,7 +17,17 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.helper.*;
 
 public class MessageService {
-	DBConnection connection = new DBConnection();
+	private static  MessageService messageService = null;
+	
+	private MessageService(){}
+	
+	public static MessageService getInstance(){
+		if (messageService == null){
+			messageService = new MessageService();
+		}
+		return messageService;
+	}
+	DBConnection connection = DBConnection.getInstance();
 	
 	public void saveData(Map<String, String[]> map, int from, int to, String fromName, String toName) throws ParseException{
 		Session session=null;

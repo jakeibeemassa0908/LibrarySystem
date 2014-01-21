@@ -22,7 +22,7 @@ public class BooksServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "books");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("books.jsp");
-		BookService abs = new BookService();
+		BookService abs = BookService.getInstance();
 		List<Books> books = abs.getbooks(null, null, null, null, null, null);
 		session.setAttribute("books", books);
 		dispatcher.forward(request, response);

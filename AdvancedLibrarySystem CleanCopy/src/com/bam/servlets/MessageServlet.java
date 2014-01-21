@@ -33,10 +33,10 @@ public class MessageServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(name);
 		HttpSession session = request.getSession();
 		session.setAttribute("active_tab", "message");
-		MessageService msgServ = new MessageService();
+		MessageService msgServ = MessageService.getInstance();
 		List<Messages> messagesin, messagesout,message;
 		Students student= new Students();
-		StudentService sc= new StudentService();
+		StudentService sc= StudentService.getInstance();
 		if (session.getAttribute("user")!=null){
 		//get current user session ID
 		student=(Students) session.getAttribute("user");
@@ -147,7 +147,7 @@ public class MessageServlet extends HttpServlet {
 				String toString="";
 				HttpSession session = request.getSession();
 				Students std= new Students();
-				StudentService sc = new StudentService();
+				StudentService sc =StudentService.getInstance();
 				if(session.getAttribute("user")!=null){
 					std= (Students) session.getAttribute("user");
 					from= std.getStudentId();
@@ -169,7 +169,7 @@ public class MessageServlet extends HttpServlet {
 				error = HelperClass.validate(map);
 				//if it comes back with no error, save it to the db, if it does tell the user
 				if (error.isEmpty()){
-					MessageService message = new MessageService();
+					MessageService message = MessageService.getInstance();
 					try {
 						message.saveData(map,from, to,fromString,toString);
 						response.sendRedirect("message_outbox");
