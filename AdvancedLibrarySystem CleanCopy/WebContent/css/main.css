@@ -8,6 +8,7 @@
     
 	body{
 		background-color;
+		height:100%;
 	}
 	#logout{
     	float:right;
@@ -17,6 +18,13 @@
         	.navbar
 {
     background-color:black;
+}
+#wrap{
+	min-height:100%;
+}
+#main{
+	overflow:auto;
+	padding-bottom: 150px;
 }
 .book{
 	height:250px;
@@ -47,4 +55,17 @@
 	background-color:lightgreen;
 	border:0px;
 	padding:0px;
+}
+#footer{
+	position: relative;
+	margin-top: -20px; /* negative value of footer height */
+	height: 20px;
+	clear:both;
+}
+body:before {
+	content:"";
+	height:100%;
+	float:left;
+	width:0;
+	margin-top:-32767px;/
 }

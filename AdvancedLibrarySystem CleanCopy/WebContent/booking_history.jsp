@@ -15,6 +15,7 @@
   </head>
 
   <body>
+  <div id="wrap">
   <!-- NAVBAR
 ================================================== -->
 	<c:choose>
@@ -26,6 +27,7 @@
 	    </c:otherwise>
     </c:choose>
  	<%@ include file="includes/top_message.jsp" %>
+ 	<div id="main">
  	<div class="container">
  		<div class="row">
 	 			<c:if test="${requestScope.error!=null}">
@@ -115,17 +117,14 @@
  		
 	</div>
 
-
-
+</div>
 	<!-- Footer 
 	=========================================== -->
-    <div class="container">
+    <div class="container" id="footer">
       <!-- FOOTER -->
         <%@ include file="includes/footer.jsp" %>
 
     </div><!-- /.container -->
-   
-   
    
          
   </body>

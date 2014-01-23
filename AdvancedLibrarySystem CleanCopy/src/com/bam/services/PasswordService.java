@@ -119,7 +119,9 @@ public class PasswordService {
 					.add(Restrictions.like("email", email))
 					.setProjection(Projections.projectionList()
 					.add(Projections.property("password_salt"),"password_salt"));
-			salt=(String) criteria.list().get(0);
+			if(!criteria.list().isEmpty()){
+				salt=(String) criteria.list().get(0);
+			}
 			session.getTransaction().commit();
 		}catch(HibernateException e){
 			e.printStackTrace();

@@ -31,6 +31,7 @@ public class HomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			HttpSession session = request.getSession();
 			RequestDispatcher dispatcher=null;
+			response.setHeader("Access-Control-Allow-Origin: ", "*");
 			if(session.getAttribute("user")!=null){
 				dispatcher = request.getRequestDispatcher("home.jsp");
 				List<Bookings>bookingsToLoad=new ArrayList<Bookings>();

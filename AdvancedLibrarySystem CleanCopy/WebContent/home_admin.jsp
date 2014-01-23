@@ -11,9 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Home</title>
-
     <!-- Bootstrap core CSS -->
     <link href="<c:url value='/css/bootstrap.css'/>" rel="stylesheet">
     <link href="<c:url value='css/main.css'/>" rel="stylesheet">
@@ -22,46 +20,41 @@
   </head>
 
   <body>
+  <div id="wrap">
   <!-- NAVBAR
 ================================================== -->
     <%@ include file="includes/nav_admin.jsp" %>
-    
-    
  	<%@ include file="includes/top_message.jsp" %>
- 	
- 	<div class="container">
- 		<div class="row">
- 			<div class="col-lg-7 ">
- 				<center><h4>State of Library</h4></center>
- 			</div>
- 			<div class="col-lg-1"></div>
- 			<div class="col-lg-4 ">
- 				<h4>Library's Statistics</h4>
- 			</div>
- 				
- 		</div>
+	 <div id="main">
+	 	<div class="container">
+	 		<div class="row">
+	 			<div class="col-lg-7 ">
+	 				<center><h4>State of Library</h4></center>
+	 			</div>
+	 			<div class="col-lg-1"></div>
+	 			<div class="col-lg-4 ">
+	 				<h4>Library's Statistics</h4>
+	 			</div>
+	 		</div>
+		</div>
+	 	<div class="container">
+	 		<div class="row">
+	 			<div class="col-lg-7 well">
+	 			</div>
+	 			<div class="col-lg-1"></div>
+	 			<div class="col-lg-4 well">
+	 			<h5>Number of Students: <span class="label label-success">${requestScope.student_number}</span></h5>
+	 			<h5>Number of Books:  <span class="label label-success">${requestScope.book_number}</span></h5>
+	 			<h5>Number of Book Pieces:  <span class="label label-success">${requestScope.book_pieces_number}</span></h5>
+	 			</div>
+	 		</div>
+		</div>
 	</div>
- 	<div class="container">
- 		<div class="row">
- 			
- 			<div class="col-lg-7 well">
- 			
- 			</div>
- 			<div class="col-lg-1"></div>
- 			<div class="col-lg-4 well">
- 			<h5>Number of Students: <span class="label label-success">${requestScope.student_number}</span></h5>
- 			<h5>Number of Books:  <span class="label label-success">${requestScope.book_number}</span></h5>
- 			<h5>Number of Book Pieces:  <span class="label label-success">${requestScope.book_pieces_number}</span></h5>
- 			</div>
- 				
- 		</div>
-	</div>
-
-
+</div>
 
 	<!-- Footer 
 	=========================================== -->
-    <div class="container">
+    <div class="container" id="footer">
       <!-- FOOTER -->
         <%@ include file="includes/footer.jsp" %>
 

@@ -3,6 +3,7 @@ package com.bam.util;
 import java.util.List;
 
 import com.bam.dto.Books;
+import com.bam.dto.Messages;
 
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
@@ -54,5 +55,28 @@ public class ToJSON {
 			e.printStackTrace();
 		}
 		return json;	
+	}
+	
+	public JSONArray messagesToJSON(List<Messages> messages) throws Exception{
+		JSONArray json = new JSONArray(); //JSON array that will be returned
+		try{
+			for (Messages message: messages){
+				//each message will be converted into a JSON object
+				JSONObject obj= new JSONObject();
+				obj.put("messageId",message.getMessageId());
+				obj.put("messageContent",message.getMessageContent());
+				obj.put("messageDate", message.getMessageDate());
+				obj.put("messageSubject", message.getMessageSubject());
+				obj.put("messageFromString", message.getMessageFromString());
+				obj.put("openFlag", message.isOpenFlag());
+				obj.put("messageToString", message.getMessageToString());
+				json.put(obj);
+				
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return json;
+		
 	}
 }

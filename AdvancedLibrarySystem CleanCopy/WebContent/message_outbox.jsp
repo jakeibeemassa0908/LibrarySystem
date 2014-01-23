@@ -1,4 +1,5 @@
 <%@ include file="includes/html_top.jsp" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +67,7 @@
 								<td>${message.messageToString}</td>
 							</c:if>
 							<td>${message.messageDate}</td>
-							<td><a href="<c:url value='/message_detail?id=${message.messageId}'/>">${message.messageContent}</a></td>
+							<td><a href="<c:url value='/message_detail?id=${message.messageId}'/>">${fn:substring(message.messageContent,0,60)}...</a></td>
 						</tr>
 					</c:forEach>
 				</table>

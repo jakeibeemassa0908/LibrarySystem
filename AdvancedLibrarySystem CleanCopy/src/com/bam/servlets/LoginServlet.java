@@ -62,7 +62,6 @@ public class LoginServlet extends HttpServlet {
 						users=criteria.list();
 						if(users.isEmpty())users=null;
 					}else{
-						
 						Criteria criteria2 = session.createCriteria(Library.class)
 								.add(Restrictions.like("libraryUserName", email))
 								.add(Restrictions.like("libraryPassword",HelperClass.toSHA1(password.getBytes())));

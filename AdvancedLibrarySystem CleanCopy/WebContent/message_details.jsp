@@ -40,8 +40,8 @@
  		</div>
  		<br><br>
  		<div class="row">
- 			<div class="col-lg-4"></div>
- 			<div class="col-lg-4"><center class="well">
+ 			<div class="col-lg-3"></div>
+ 			<div class="col-lg-6"><center class="well">
  				<h4><small>Subject:</small> ${sessionScope.messagesdet[0].messageSubject}</h4>
  				<h5><small>From :</small>${sessionScope.messagesdet[0].messageFromString}</h5>
  				<h5><small>To :</small>${sessionScope.messagesdet[0].messageToString}</h5>
