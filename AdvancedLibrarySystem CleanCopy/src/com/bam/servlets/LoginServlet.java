@@ -19,6 +19,7 @@ import org.hibernate.criterion.Restrictions;
 import com.bam.dto.Library;
 import com.bam.dto.Students;
 import com.bam.helper.*;
+import com.bam.services.LoginService;
 import com.bam.services.PasswordService;
 
 /**
@@ -37,10 +38,9 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			DBConnection connection = DBConnection.getInstance();
 			String email= (String)request.getParameter("email");
 			String password=(String) request.getParameter("password");
-			PasswordService ps = PasswordService.getInstance();
+			LoginService login = LoginService.getInstance();
 			if(email.isEmpty() || password.isEmpty()){
 				String errorString = "User Name or Password cannot be left blank";
 				RequestDispatcher dispatcher= request.getRequestDispatcher("login.jsp");
@@ -49,30 +49,18 @@ public class LoginServlet extends HttpServlet {
 				return;
 			}
 			else{
-				Session session=null;
 				List<Students> users=null;
 				List<Library> admin=null;
 				try {
-					session = connection.getSession();
-					session.beginTransaction();
 					if(HelperClass.validateEmail(email)){
-						Criteria criteria =session.createCriteria(Students.class)
-								.add(Restrictions.like("email", email))
-								.add(Restrictions.like("password",HelperClass.generateSaltedEncrypted(password, ps.getPasswordSalt(email))));
-						users=criteria.list();
+						users=login.logStudentIn(email, password);
 						if(users.isEmpty())users=null;
 					}else{
-						Criteria criteria2 = session.createCriteria(Library.class)
-								.add(Restrictions.like("libraryUserName", email))
-								.add(Restrictions.like("libraryPassword",HelperClass.toSHA1(password.getBytes())));
-						admin= criteria2.list();
+						admin = login.logAdminIn(email, password);
 						if(admin.isEmpty())admin=null;
 					}
-					session.getTransaction().commit();
 				} catch (HibernateException e) {
 					e.printStackTrace();
-				}finally{
-					session.close();
 				}
 					if(users==null && admin==null){
 						String errorString = "User Name or Password is incorect";
